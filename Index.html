@@ -1,0 +1,920 @@
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adulala Resort & Spa | Bishoftu</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons (Premium Feather Icons Replacement) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: {
+                            DEFAULT: '#d4af37',
+                            light: '#f3e5ab',
+                            dark: '#aa8010',
+                        },
+                        obsidian: '#0b0c0e',
+                        charcoal: '#14161a',
+                        softGray: '#a0aec0',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Animations & Interactions */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slow-zoom {
+            animation: slowZoom 25s ease-in-out infinite alternate;
+        }
+        
+        @keyframes slowZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .glass-panel {
+            background: rgba(20, 22, 26, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Smooth Reveal Transitions */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0c0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-gray-300 font-sans overflow-x-hidden selection:bg-gold selection:text-obsidian">
+
+    <!-- --- Header & Navigation --- -->
+    <header id="navbar" class="fixed w-full z-50 transition-all duration-500 py-6 bg-transparent transform translate-y-0">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center">
+            <a href="#" class="text-2xl font-serif tracking-[0.2em] text-white uppercase font-bold">
+                ADULALA <span class="text-gold font-light">RESORT</span>
+            </a>
+            
+            <!-- Desktop Nav Links -->
+            <nav class="hidden lg:flex items-center space-x-8 font-serif text-xs tracking-widest uppercase">
+                <a href="#home" class="text-white hover:text-gold transition-colors duration-300">Home</a>
+                <a href="#rooms" class="text-gray-400 hover:text-gold transition-colors duration-300">Rooms & Villas</a>
+                <a href="#amenities" class="text-gray-400 hover:text-gold transition-colors duration-300">Amenities</a>
+                <a href="#wellness" class="text-gray-400 hover:text-gold transition-colors duration-300">Wellness</a>
+                <a href="#recreation" class="text-gray-400 hover:text-gold transition-colors duration-300">Recreation</a>
+                <a href="#contact" class="text-gray-400 hover:text-gold transition-colors duration-300">Contact</a>
+            </nav>
+
+            <!-- Menu Button -->
+            <button id="menu-btn" class="text-white hover:text-gold transition-colors flex items-center gap-2 uppercase tracking-widest text-xs font-semibold">
+                <span>Menu</span>
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Overlay Navigation Menu -->
+    <div id="menu-overlay" class="fixed inset-0 bg-obsidian z-[60] transition-all duration-700 ease-in-out transform -translate-y-full opacity-0 flex flex-col justify-center items-center">
+        <button id="close-menu-btn" class="absolute top-8 right-8 text-white hover:text-gold transition-colors p-2">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <ul class="text-center space-y-8 font-serif text-3xl md:text-5xl tracking-widest uppercase">
+            <li><a href="#home" class="menu-link text-gray-500 hover:text-gold transition-all duration-300 block hover:scale-105">Home</a></li>
+            <li><a href="#rooms" class="menu-link text-gray-500 hover:text-gold transition-all duration-300 block hover:scale-105">Rooms & Villas</a></li>
+            <li><a href="#amenities" class="menu-link text-gray-500 hover:text-gold transition-all duration-300 block hover:scale-105">Amenities</a></li>
+            <li><a href="#wellness" class="menu-link text-gray-500 hover:text-gold transition-all duration-300 block hover:scale-105">Wellness & Beauty</a></li>
+            <li><a href="#recreation" class="menu-link text-gray-500 hover:text-gold transition-all duration-300 block hover:scale-105">Recreation</a></li>
+            <li><a href="#contact" class="menu-link text-gray-500 hover:text-gold transition-all duration-300 block hover:scale-105">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- --- Section 1: Hero Experience --- -->
+    <section id="home" class="relative min-h-screen w-full overflow-hidden flex flex-col justify-between pt-32 pb-16">
+        <!-- Background Image with fallbacks -->
+        <div class="absolute inset-0 w-full h-full -z-10 bg-[#14161a]">
+            <img 
+                src="https://images.unsplash.com/photo-1542314831-c53cd381615a?q=80&w=2070&auto=format&fit=crop" 
+                alt="Adulala Resort Concept"
+                class="w-full h-full object-cover slow-zoom"
+                onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop'"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/45 to-obsidian"></div>
+        </div>
+
+        <!-- Hero Content (Middle Centered) -->
+        <div class="my-auto text-center px-6 max-w-5xl mx-auto">
+            <p class="text-gold tracking-[0.4em] uppercase text-xs md:text-sm mb-6 font-medium">Bishoftu, Ethiopia</p>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl text-white font-semibold leading-tight mb-6 drop-shadow-2xl">
+                Rejuvenate <br><span class="font-light italic text-gold">Your Soul</span>
+            </h1>
+            <p class="text-gray-300 text-sm md:text-lg tracking-wide font-light max-w-xl mx-auto mb-8 leading-relaxed">
+                Experience natural beauty, luxury services, and peaceful lakeside escape.
+            </p>
+            <a href="#rooms" class="inline-block px-10 py-4 border border-gold text-gold hover:bg-gold hover:text-obsidian uppercase tracking-[0.2em] text-xs font-semibold transition-all duration-500 rounded-sm">
+                Begin Your Journey
+            </a>
+        </div>
+
+        <!-- Responsive Booking Widget -->
+        <div class="w-full px-4 mt-8">
+          <div class="max-w-6xl mx-auto glass-panel rounded-lg shadow-2xl p-6 lg:p-8">
+              <form onsubmit="event.preventDefault();" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
+                  <div class="w-full">
+                      <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Check In</label>
+                      <div class="flex items-center border-b border-gray-600 pb-2">
+                          <i data-lucide="calendar" class="w-4 h-4 text-gold mr-3"></i>
+                          <input type="date" class="bg-transparent w-full text-white focus:outline-none text-sm cursor-pointer" value="2026-06-22" style="color-scheme: dark;">
+                      </div>
+                  </div>
+                  <div class="w-full">
+                      <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Check Out</label>
+                      <div class="flex items-center border-b border-gray-600 pb-2">
+                          <i data-lucide="calendar" class="w-4 h-4 text-gold mr-3"></i>
+                          <input type="date" class="bg-transparent w-full text-white focus:outline-none text-sm cursor-pointer" value="2026-06-29" style="color-scheme: dark;">
+                      </div>
+                  </div>
+                  <div class="w-full">
+                      <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Guests</label>
+                      <div class="flex items-center border-b border-gray-600 pb-2">
+                          <i data-lucide="users" class="w-4 h-4 text-gold mr-3"></i>
+                          <select class="bg-transparent w-full text-white focus:outline-none text-sm appearance-none cursor-pointer pr-4">
+                              <option class="bg-charcoal text-white">2 Adults</option>
+                              <option class="bg-charcoal text-white">4 Adults</option>
+                              <option class="bg-charcoal text-white">1 Adult</option>
+                              <option class="bg-charcoal text-white">Family Suite</option>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="w-full">
+                      <button class="w-full bg-gold hover:bg-white text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm transition-colors duration-300 shadow-lg">
+                          Check Availability
+                      </button>
+                  </div>
+              </form>
+          </div>
+        </div>
+    </section>
+
+    <!-- Spacer to visually offset the floating booking widget -->
+    <div class="h-40 md:h-28 bg-obsidian"></div>
+
+    <!-- --- Section 2: The Oasis Awaits (Introduction) --- -->
+    <section class="py-24 px-6 lg:px-12 max-w-7xl mx-auto bg-obsidian">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            
+            <!-- Left Side: Editorial Images -->
+            <div class="relative reveal bg-[#14161a] rounded-sm p-2">
+                <div class="w-11/12 ml-auto">
+                    <img 
+                        src="https://images.unsplash.com/photo-1618773928120-2c70b2df2836?q=80&w=2070&auto=format&fit=crop" 
+                        alt="Adulala Luxury Sanctuary" 
+                        class="rounded-sm shadow-2xl z-10 relative object-cover h-[450px] w-full"
+                        onerror="this.src='https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2070&auto=format&fit=crop'"
+                    />
+                </div>
+                <!-- Overlapping Image -->
+                <div class="absolute bottom-[-8%] left-0 w-2/3 transform -translate-y-4">
+                    <img 
+                        src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2070&auto=format&fit=crop" 
+                        alt="Bespoke Poolside View" 
+                        class="rounded-sm shadow-2xl border-[8px] border-obsidian object-cover h-[280px] w-full"
+                        onerror="this.src='https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=2070&auto=format&fit=crop'"
+                    />
+                </div>
+            </div>
+            
+            <!-- Right Side: Luxury Editorial Content -->
+            <div class="lg:pl-8 reveal">
+                <p class="text-gold uppercase tracking-[0.3em] text-xs font-semibold mb-3">The Adulala Philosophy</p>
+                <h2 class="font-serif text-3xl md:text-5xl text-white leading-tight mb-6">
+                    A beautiful sanctuary where modern comfort meets <span class="italic font-light text-gold">raw nature</span>.
+                </h2>
+                <div class="space-y-4 text-gray-400 font-light leading-relaxed text-sm md:text-base">
+                    <p>
+                        Located along the beautiful volcanic lakes of Bishoftu, Adulala Resort & Spa is a perfect mountain hideaway. Enjoy quiet spaces, warm hospitality, and healthy fresh air.
+                    </p>
+                    <p>
+                        We design our spaces with natural basalt stone, rich local wood, and bright gold accents that glow beautifully under the Ethiopian sun.
+                    </p>
+                </div>
+                <div class="mt-8">
+                    <a href="#contact" class="inline-flex items-center text-white border-b-2 border-gold pb-2 hover:text-gold transition-colors uppercase tracking-widest text-xs font-bold gap-3">
+                        Book a Stay <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- --- Section 2.5: Resort Amenities & Activities --- -->
+    <section id="amenities" class="py-24 bg-charcoal relative border-t border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            
+            <div class="text-center mb-16 reveal">
+                <p class="text-gold uppercase tracking-[0.3em] text-xs font-semibold mb-3">What We Offer</p>
+                <h2 class="font-serif text-3xl md:text-4xl text-white">Resort Amenities & Activities</h2>
+                <div class="w-16 h-[2px] bg-gold mx-auto mt-4"></div>
+            </div>
+
+            <!-- Amenities Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+                
+                <!-- Amenity 1: Free Wi-Fi -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="wifi" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Free High-Speed Wi-Fi</h4>
+                    <p class="text-gray-400 text-xs font-light">Fast, seamless internet access all across the resort premises.</p>
+                </div>
+
+                <!-- Amenity 2: Laundry Service -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="shirt" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Laundry Service</h4>
+                    <p class="text-gray-400 text-xs font-light">Same-day express washing, pressing, and premium fabric care.</p>
+                </div>
+
+                <!-- Amenity 3: Safety Box -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="shield-check" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">In-Room Safe Box</h4>
+                    <p class="text-gray-400 text-xs font-light">Secure, high-tech electronic safety deposits inside your room.</p>
+                </div>
+
+                <!-- Amenity 4: Car Wash -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="car" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Eco Car Wash</h4>
+                    <p class="text-gray-400 text-xs font-light">Complementary premium vehicle detailing for overnight guests.</p>
+                </div>
+
+                <!-- Amenity 5: Horse & Camel Riding -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="compass" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Horse & Camel Rides</h4>
+                    <p class="text-gray-400 text-xs font-light">Bespoke lake-trail riding experiences led by expert guides.</p>
+                </div>
+
+                <!-- Amenity 6: Swimming -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="waves" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Heated Pools</h4>
+                    <p class="text-gray-400 text-xs font-light">Serene infinity swimming pools overlooking the magnificent valley.</p>
+                </div>
+
+                <!-- Amenity 7: Traditional Coffee -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="cup" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Ethiopian Coffee</h4>
+                    <p class="text-gray-400 text-xs font-light">Authentic, fragrant traditional coffee ceremony hosted daily.</p>
+                </div>
+
+                <!-- Amenity 8: Gift Shop -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="shopping-bag" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Craft & Gift Shop</h4>
+                    <p class="text-gray-400 text-xs font-light">Purchase beautiful local artifacts, textiles, and organic keepsakes.</p>
+                </div>
+
+                <!-- Amenity 9: Spa Services -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="sparkles" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Wellness Spa & Sauna</h4>
+                    <p class="text-gray-400 text-xs font-light">World-class massage treatments, steam baths, and body wraps.</p>
+                </div>
+
+                <!-- Amenity 10: Business Center -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="briefcase" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Business Center</h4>
+                    <p class="text-gray-400 text-xs font-light">Quiet workspaces, high-speed copy tools, and computer stations.</p>
+                </div>
+
+                <!-- Amenity 11: Photo Shoots -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="camera" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Professional Photos</h4>
+                    <p class="text-gray-400 text-xs font-light">Dedicated scenic backdrops ideal for weddings and family photo sessions.</p>
+                </div>
+
+                <!-- Amenity 12: Premium Lounge -->
+                <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
+                    <div class="text-gold mb-4"><i data-lucide="heart" class="w-8 h-8"></i></div>
+                    <h4 class="font-serif text-lg text-white mb-1">Lakeside Bar & Cafe</h4>
+                    <p class="text-gray-400 text-xs font-light">Delicious meals and fresh juices crafted by our gourmet chefs.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Section 3: Rooms & Villas --- -->
+    <section id="rooms" class="py-24 bg-obsidian relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            
+            <div class="text-center mb-16 reveal">
+                <p class="text-gold uppercase tracking-[0.3em] text-xs font-semibold mb-3">Accommodations</p>
+                <h2 class="font-serif text-3xl md:text-5xl text-white font-medium">Our Rooms & Villas</h2>
+                <div class="w-16 h-[2px] bg-gold mx-auto mt-4"></div>
+            </div>
+
+            <!-- Rooms Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000">
+                
+                <!-- Card 1 -->
+                <div class="reveal tilt-card-wrapper">
+                    <div class="tilt-card relative h-[480px] rounded-lg overflow-hidden cursor-pointer shadow-xl group bg-charcoal">
+                        <img 
+                            src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074&auto=format&fit=crop" 
+                            alt="Executive Lakeview Suite" 
+                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            onerror="this.src='https://images.unsplash.com/photo-1611891404779-497af6778975?q=80&w=2070&auto=format&fit=crop'"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-black/25 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500"></div>
+                        
+                        <div class="absolute top-6 left-6 bg-gold text-obsidian text-[10px] tracking-widest uppercase font-bold px-3 py-1 rounded-sm">
+                            Best Seller
+                        </div>
+
+                        <div class="absolute bottom-0 left-0 w-full p-6">
+                            <div class="flex items-center gap-1 text-gold mb-2">
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-white mb-2">Executive Suite</h3>
+                            <p class="text-gray-400 text-xs font-light mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                Relaxing lake views, customized mini-fridge, and comfortable private veranda.
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300 font-light tracking-wide text-sm">From <span class="text-gold font-semibold text-base">$210</span> / night</span>
+                                <span class="text-gold uppercase tracking-widest text-xs font-bold flex items-center gap-2">
+                                    Reserve <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="reveal tilt-card-wrapper" style="transition-delay: 150ms;">
+                    <div class="tilt-card relative h-[480px] rounded-lg overflow-hidden cursor-pointer shadow-xl group bg-charcoal">
+                        <img 
+                            src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=2070&auto=format&fit=crop" 
+                            alt="Presidential Villa" 
+                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            onerror="this.src='https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=2070&auto=format&fit=crop'"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-black/25 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500"></div>
+
+                        <div class="absolute bottom-0 left-0 w-full p-6">
+                            <div class="flex items-center gap-1 text-gold mb-2">
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-white mb-2">Deluxe Villa</h3>
+                            <p class="text-gray-400 text-xs font-light mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                Quiet, spacious private villa with direct gardens and dedicated room service.
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300 font-light tracking-wide text-sm">From <span class="text-gold font-semibold text-base">$350</span> / night</span>
+                                <span class="text-gold uppercase tracking-widest text-xs font-bold flex items-center gap-2">
+                                    Reserve <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="reveal tilt-card-wrapper" style="transition-delay: 300ms;">
+                    <div class="tilt-card relative h-[480px] rounded-lg overflow-hidden cursor-pointer shadow-xl group bg-charcoal">
+                        <img 
+                            src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1974&auto=format&fit=crop" 
+                            alt="Deluxe Room" 
+                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            onerror="this.src='https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop'"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-black/25 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500"></div>
+
+                        <div class="absolute bottom-0 left-0 w-full p-6">
+                            <div class="flex items-center gap-1 text-gold mb-2">
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                                <i data-lucide="star" class="w-3 h-3 fill-gold"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-white mb-2">Deluxe Room</h3>
+                            <p class="text-gray-400 text-xs font-light mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                Cozy premium room featuring excellent natural lighting and high-end beds.
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300 font-light tracking-wide text-sm">From <span class="text-gold font-semibold text-base">$160</span> / night</span>
+                                <span class="text-gold uppercase tracking-widest text-xs font-bold flex items-center gap-2">
+                                    Reserve <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Section 4: The Wellness Pillars --- -->
+    <section id="wellness" class="relative h-[80vh] min-h-[600px] flex items-center bg-obsidian overflow-hidden">
+        
+        <!-- Background Imagery Layers -->
+        <div id="wellness-bg-spa" class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100 bg-[#14161a]">
+            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070&auto=format&fit=crop" alt="Spa Experience" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/70"></div>
+        </div>
+        <div id="wellness-bg-sauna" class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0 bg-[#14161a]">
+            <img src="https://images.unsplash.com/photo-1596178055452-959fb9e1951d?q=80&w=2070&auto=format&fit=crop" alt="Thermal Sauna" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/70"></div>
+        </div>
+        <div id="wellness-bg-salon" class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0 bg-[#14161a]">
+            <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=2069&auto=format&fit=crop" alt="Bespoke Hair Salon" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/70"></div>
+        </div>
+
+        <div class="relative z-20 max-w-7xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-2 gap-16">
+            
+            <!-- Tab Controls -->
+            <div class="flex flex-col justify-center">
+                <p class="text-gold uppercase tracking-[0.3em] text-xs font-semibold mb-6">Rest & Relaxation</p>
+                <div class="space-y-6">
+                    <button onclick="switchWellness('spa')" class="wellness-tab text-left block group focus:outline-none">
+                        <h3 id="wellness-title-spa" class="font-serif text-3xl md:text-5xl text-white transition-colors duration-500 tracking-wider">
+                            Spa Services
+                        </h3>
+                    </button>
+                    <button onclick="switchWellness('sauna')" class="wellness-tab text-left block group focus:outline-none">
+                        <h3 id="wellness-title-sauna" class="font-serif text-3xl md:text-5xl text-gray-500 hover:text-gray-300 transition-colors duration-500 tracking-wider">
+                            Hot Sauna
+                        </h3>
+                    </button>
+                    <button onclick="switchWellness('salon')" class="wellness-tab text-left block group focus:outline-none">
+                        <h3 id="wellness-title-salon" class="font-serif text-3xl md:text-5xl text-gray-500 hover:text-gray-300 transition-colors duration-500 tracking-wider">
+                            Beauty Salon
+                        </h3>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic content cards -->
+            <div class="flex items-center lg:justify-end">
+                <div class="glass-panel p-8 md:p-10 max-w-md rounded-sm border-l-4 border-gold">
+                    <h4 id="panel-title" class="font-serif text-xl md:text-2xl text-white mb-4">Spa Services</h4>
+                    <p id="panel-desc" class="text-gray-300 font-light leading-relaxed mb-6 text-sm">
+                        Refresh your mind and body. We offer relaxing massage therapies, facial care, and premium oil rituals.
+                    </p>
+                    <button class="text-gold uppercase tracking-[0.2em] text-xs font-semibold border border-gold px-6 py-3 hover:bg-gold hover:text-obsidian transition-colors duration-300">
+                        View Price List
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- --- Section 5: Recreation & Gathering --- -->
+    <section id="recreation" class="py-24 bg-charcoal">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 space-y-24">
+            
+            <!-- Row 1: Pools -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <div class="aspect-[4/3] overflow-hidden rounded-sm shadow-2xl relative group bg-[#14161a]">
+                        <img 
+                            src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?q=80&w=2070&auto=format&fit=crop" 
+                            alt="Infinity Pools" 
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                        />
+                    </div>
+                </div>
+                <div class="reveal lg:pl-10">
+                    <p class="text-gold uppercase tracking-[0.2em] text-xs font-semibold mb-3">Leisure & Fun</p>
+                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-4">Thermal Swimming Pools</h3>
+                    <p class="text-gray-400 font-light text-sm md:text-base mb-6 leading-relaxed">
+                        Swim and relax in our temperature-regulated infinity pool. Features amazing views of the natural valleys and refreshing poolside drinks.
+                    </p>
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center text-xs font-light text-gray-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gold mr-2"></span> Warm Water
+                        </div>
+                        <div class="flex items-center text-xs font-light text-gray-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gold mr-2"></span> VIP Poolside Service
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Gym & Performance -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal lg:order-2">
+                    <div class="aspect-[4/3] overflow-hidden rounded-sm shadow-2xl relative group bg-[#14161a]">
+                        <img 
+                            src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop" 
+                            alt="Fitness Centre" 
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                        />
+                    </div>
+                </div>
+                <div class="reveal lg:pr-10 lg:order-1">
+                    <p class="text-gold uppercase tracking-[0.2em] text-xs font-semibold mb-3">Healthy Living</p>
+                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-4">Fitness Center</h3>
+                    <p class="text-gray-400 font-light text-sm md:text-base mb-6 leading-relaxed">
+                        Stay active during your stay with our modern workout machines. Overlooking natural trees and gardens to help you stay refreshed.
+                    </p>
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center text-xs font-light text-gray-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gold mr-2"></span> Modern Gym Equipment
+                        </div>
+                        <div class="flex items-center text-xs font-light text-gray-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gold mr-2"></span> Scenic Views
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Amusement Park -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <div class="aspect-[4/3] overflow-hidden rounded-sm shadow-2xl relative group bg-[#14161a]">
+                        <img 
+                            src="https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=2070&auto=format&fit=crop" 
+                            alt="Amusement Park" 
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                        />
+                    </div>
+                </div>
+                <div class="reveal lg:pl-10">
+                    <p class="text-gold uppercase tracking-[0.2em] text-xs font-semibold mb-3">Family & Adventure</p>
+                    <h3 class="font-serif text-3xl md:text-4xl text-white mb-4">Resort Amusement Park</h3>
+                    <p class="text-gray-400 font-light text-sm md:text-base mb-6 leading-relaxed">
+                        Create wonderful family memories at our on-site amusement park. Enjoy vibrant sunset rides, kids play zones, and beautifully lit evening attractions.
+                    </p>
+                    <div class="flex items-center gap-6">
+                        <div class="flex items-center text-xs font-light text-gray-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gold mr-2"></span> Kid-Safe Play Zones
+                        </div>
+                        <div class="flex items-center text-xs font-light text-gray-300">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gold mr-2"></span> Sunset Rides & Lights
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- --- Section 6: Testimonials & Social Proof --- -->
+    <section class="py-24 bg-obsidian text-center relative overflow-hidden">
+        <div class="max-w-3xl mx-auto px-6 relative z-10 reveal">
+            <div class="flex justify-center mb-6">
+                <i data-lucide="quote" class="w-10 h-10 text-gold opacity-50"></i>
+            </div>
+            
+            <h2 class="font-serif text-xl md:text-3xl text-white leading-relaxed italic mb-8">
+                "An incredibly peaceful escape. The lovely staff, the warm pools, and the quiet spa left me completely relaxed. I will definitely visit again!"
+            </h2>
+            
+            <div class="flex flex-col items-center">
+                <img 
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" 
+                    alt="Luxury Guest Profile" 
+                    class="w-14 h-14 rounded-full object-cover border-2 border-gold shadow-lg mb-3"
+                    onerror="this.src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop'"
+                />
+                <h5 class="text-white font-serif tracking-wider font-semibold">Selamawit T.</h5>
+                <p class="text-gold text-xs uppercase tracking-[0.2em] mt-1">Happy Guest</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Contact & Location Portal --- -->
+    <section id="contact" class="py-24 bg-charcoal border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16">
+          
+          <!-- Contact Info -->
+          <div class="reveal">
+              <p class="text-gold uppercase tracking-[0.3em] text-xs font-semibold mb-3">Inquiries</p>
+              <h2 class="font-serif text-3xl md:text-5xl text-white leading-tight mb-6">Get In Touch</h2>
+              <p class="text-gray-400 font-light leading-relaxed mb-8 max-w-lg text-sm md:text-base">
+                  Contact us today to book rooms, reserve our meeting hall for corporate events and weddings, or customize your stay package. We are here to help.
+              </p>
+
+              <div class="space-y-6">
+                  <div class="flex items-start">
+                      <div class="bg-obsidian p-3 rounded-full border border-white/5 mr-4 mt-1">
+                          <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
+                      </div>
+                      <div>
+                          <h5 class="text-white font-serif tracking-wide text-sm mb-1">Our Location</h5>
+                          <p class="text-gray-400 font-light text-sm">QXVW+CG Bishoftu, Ethiopia</p>
+                      </div>
+                  </div>
+                  <div class="flex items-start">
+                      <div class="bg-obsidian p-3 rounded-full border border-white/5 mr-4 mt-1">
+                          <i data-lucide="phone" class="w-5 h-5 text-gold"></i>
+                      </div>
+                      <div>
+                          <h5 class="text-white font-serif tracking-wide text-sm mb-1">Call Us</h5>
+                          <p class="text-gray-400 font-light text-sm hover:text-gold transition-colors">
+                              <a href="tel:+251911491050">091 149 1050</a>
+                          </p>
+                      </div>
+                  </div>
+                  <div class="flex items-start">
+                      <div class="bg-obsidian p-3 rounded-full border border-white/5 mr-4 mt-1">
+                          <i data-lucide="mail" class="w-5 h-5 text-gold"></i>
+                      </div>
+                      <div>
+                          <h5 class="text-white font-serif tracking-wide text-sm mb-1">Email Us</h5>
+                          <p class="text-gray-400 font-light text-sm hover:text-gold transition-colors">
+                              <a href="mailto:concierge@adulalaresort.com">concierge@adulalaresort.com</a>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Digital Booking Form -->
+          <div class="reveal">
+              <form onsubmit="event.preventDefault();" class="glass-panel p-6 md:p-8 rounded-lg shadow-2xl relative">
+                  <h3 class="font-serif text-xl text-white mb-6">Send an Inquiry</h3>
+                  
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                      <div>
+                          <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Your Name</label>
+                          <input type="text" class="w-full bg-obsidian border border-gray-700 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-gold transition-colors" placeholder="e.g. Almaz Kebede">
+                      </div>
+                      <div>
+                          <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Your Phone</label>
+                          <input type="tel" class="w-full bg-obsidian border border-gray-700 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-gold transition-colors" placeholder="e.g. 0911 491 050">
+                      </div>
+                  </div>
+
+                  <div class="mb-4">
+                      <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Interested In</label>
+                      <select class="w-full bg-obsidian border border-gray-700 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-gold transition-colors">
+                          <option>Room & Villa Reservation</option>
+                          <option>Meeting / Event Hall</option>
+                          <option>Spa & Sauna Session</option>
+                          <option>Day-Use Pass</option>
+                      </select>
+                  </div>
+
+                  <div class="mb-6">
+                      <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Message / Details</label>
+                      <textarea rows="3" class="w-full bg-obsidian border border-gray-700 rounded px-4 py-3 text-white text-sm focus:outline-none focus:border-gold transition-colors" placeholder="Let us know your preferred dates or any special requests..."></textarea>
+                  </div>
+
+                  <button type="submit" class="w-full bg-gold text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:bg-white transition-colors duration-300 shadow-xl">
+                      Send Request
+                  </button>
+              </form>
+          </div>
+
+        </div>
+    </section>
+
+    <!-- --- Footer --- -->
+    <footer class="bg-obsidian border-t border-white/5 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            
+            <div class="col-span-1 md:col-span-2">
+                <div class="text-2xl font-serif tracking-[0.2em] text-white uppercase font-bold mb-4">
+                    ADULALA <span class="text-gold font-light">RESORT</span>
+                </div>
+                <p class="text-gray-400 font-light text-xs md:text-sm max-w-sm mb-6 leading-relaxed">
+                    Enjoy corporate meeting spaces, luxurious room escapes, and calming spa programs along the lakes of Bishoftu.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-9 h-9 rounded-full border border-gray-800 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold transition-colors">
+                        <i data-lucide="instagram" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 rounded-full border border-gray-800 flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold transition-colors">
+                        <i data-lucide="facebook" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-serif tracking-wider mb-4 text-sm font-semibold">Services</h4>
+                <ul class="space-y-3 text-xs md:text-sm text-gray-400 font-light">
+                    <li><a href="#rooms" class="hover:text-gold transition-colors">Villas & Rooms</a></li>
+                    <li><a href="#wellness" class="hover:text-gold transition-colors">Spa & Sauna</a></li>
+                    <li><a href="#recreation" class="hover:text-gold transition-colors">Swimming Pools</a></li>
+                    <li><a href="#amenities" class="hover:text-gold transition-colors">Resort Activities</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-serif tracking-wider mb-4 text-sm font-semibold">Newsletter</h4>
+                <p class="text-xs text-gray-400 font-light mb-4">Join our list for exclusive offers and packages.</p>
+                <div class="flex border-b border-gray-700 pb-2">
+                    <input type="email" placeholder="Your Email" class="bg-transparent w-full text-white focus:outline-none text-xs font-light">
+                    <button class="text-gold uppercase tracking-widest text-[10px] font-bold hover:text-white transition-colors pl-2">
+                        Join
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-600 font-light uppercase tracking-widest gap-4">
+            <p>&copy; 2026 Adulala Resort & Spa. Developed by Luxury Systems.</p>
+            <div class="flex space-x-4">
+                <a href="#" class="hover:text-gold transition-colors">Privacy</a>
+                <a href="#" class="hover:text-gold transition-colors">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- --- Scripts & Interactive Engine --- -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 1. Smart Hide/Show Navbar on Scroll
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            const currentScrollY = window.scrollY;
+
+            // Background change
+            if (currentScrollY > 50) {
+                nav.classList.remove('bg-transparent', 'py-6');
+                nav.classList.add('bg-obsidian/95', 'backdrop-blur-md', 'py-4', 'shadow-xl');
+            } else {
+                nav.classList.add('bg-transparent', 'py-6');
+                nav.classList.remove('bg-obsidian/95', 'backdrop-blur-md', 'py-4', 'shadow-xl');
+            }
+
+            // Slide Up/Down Behavior
+            if (currentScrollY > lastScrollY && currentScrollY > 150) {
+                nav.classList.add('-translate-y-full'); // Hides on scroll down
+            } else {
+                nav.classList.remove('-translate-y-full'); // Shows on scroll up
+            }
+            lastScrollY = currentScrollY;
+        });
+
+        // 2. Responsive Mobile Overlay Menu
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        function toggleMenu(open) {
+            if (open) {
+                menuOverlay.classList.remove('-translate-y-full', 'opacity-0');
+                menuOverlay.classList.add('translate-y-0', 'opacity-100');
+            } else {
+                menuOverlay.classList.remove('translate-y-0', 'opacity-100');
+                menuOverlay.classList.add('-translate-y-full', 'opacity-0');
+            }
+        }
+
+        menuBtn.addEventListener('click', () => toggleMenu(true));
+        closeMenuBtn.addEventListener('click', () => toggleMenu(false));
+        menuLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+
+        // 3. Smooth Reveal on Scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        revealElements.forEach(element => revealObserver.observe(element));
+
+        // 4. Interactive Wellness Section Dynamic Switcher
+        const wellnessContents = {
+            spa: {
+                title: 'Spa Services',
+                desc: 'Refresh your mind and body. We offer relaxing massage therapies, facial care, and premium oil rituals.'
+            },
+            sauna: {
+                title: 'Hot Sauna',
+                desc: 'Flush toxins and refresh your body inside our premium heated pine sauna and relaxing eucalyptus-scented steam bath cabinets.'
+            },
+            salon: {
+                title: 'Beauty Salon',
+                desc: 'Step into our professional beauty salon for cuts, styling, conditioning, and luxury hair treatments hosted by top local stylists.'
+            }
+        };
+
+        function switchWellness(type) {
+            ['spa', 'sauna', 'salon'].forEach(item => {
+                const bg = document.getElementById(`wellness-bg-${item}`);
+                const title = document.getElementById(`wellness-title-${item}`);
+                if (item === type) {
+                    bg.classList.remove('opacity-0');
+                    bg.classList.add('opacity-100');
+                    title.classList.remove('text-gray-500', 'hover:text-gray-300');
+                    title.classList.add('text-gold');
+                } else {
+                    bg.classList.remove('opacity-100');
+                    bg.classList.add('opacity-0');
+                    title.classList.remove('text-gold');
+                    title.classList.add('text-gray-500', 'hover:text-gray-300');
+                }
+            });
+
+            document.getElementById('panel-title').innerText = wellnessContents[type].title;
+            document.getElementById('panel-desc').innerText = wellnessContents[type].desc;
+        }
+
+        // 5. 3D Tilt Card Physics (Vanilla implementation for ultra-smooth rendering)
+        const tiltCards = document.querySelectorAll('.tilt-card-wrapper');
+        
+        tiltCards.forEach(wrapper => {
+            const card = wrapper.querySelector('.tilt-card');
+            
+            wrapper.addEventListener('mousemove', (e) => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+                
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+            });
+            
+            wrapper.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+    </script>
+</body>
+</html>
+
