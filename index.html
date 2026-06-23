@@ -59,6 +59,7 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
+        /* Reveal states with instant fallback if active class is not handled */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -113,14 +114,15 @@
 
     <!-- --- Section 1: Hero Experience --- -->
     <section id="home" class="relative z-0 min-h-screen w-full flex flex-col justify-between pt-32 pb-16">
-        <!-- FIXED: Image layer z-index adjusted to 0, ensuring visibility behind the relative z-10 content -->
+        <!-- FIXED: Optimized and verified resort pool photo link, combined with fail-safes -->
         <div class="absolute inset-0 w-full h-full z-0 bg-[#14161a]">
           <img 
-              src="https://images.unsplash.com/photo-1542314831-c53cd381615a?q=80&w=2070&auto=format&fit=crop" 
+              src="https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop" 
+              onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2070&auto=format&fit=crop';"
               alt="Adulala Resort View"
               class="w-full h-full object-cover slow-zoom"
           />
-          <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-obsidian"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-black/75 via-black/40 to-obsidian"></div>
         </div>
 
         <div class="my-auto text-center px-6 max-w-5xl mx-auto relative z-10">
@@ -131,7 +133,7 @@
             <p class="text-gray-300 text-sm md:text-lg tracking-wide font-light max-w-xl mx-auto mb-8 leading-relaxed">
                 Experience natural beauty, luxury services, and peaceful lakeside escape.
             </p>
-            <button onclick="window.openBookingFlow(1)" class="inline-block px-10 py-4 border border-gold text-gold hover:bg-gold hover:text-obsidian uppercase tracking-[0.2em] text-xs font-semibold transition-all duration-500 rounded-sm">
+            <button data-booking-step="1" class="inline-block px-10 py-4 border border-gold text-gold hover:bg-gold hover:text-obsidian uppercase tracking-[0.2em] text-xs font-semibold transition-all duration-500 rounded-sm">
                 Begin Your Journey
             </button>
         </div>
@@ -156,13 +158,13 @@
                   </div>
                   <div class="w-full">
                       <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Guests</label>
-                      <div class="flex items-center border-b border-gray-600 pb-2 cursor-pointer" onclick="window.openBookingFlow(1)">
+                      <div id="guest-display-trigger" class="flex items-center border-b border-gray-600 pb-2 cursor-pointer">
                           <i data-lucide="users" class="w-4 h-4 text-gold mr-3"></i>
                           <div id="widget-guest-display" class="bg-transparent w-full text-white text-sm">2 Adults, 1 Room</div>
                       </div>
                   </div>
                   <div class="w-full">
-                      <button onclick="window.triggerSearch()" class="w-full bg-gold hover:bg-white text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm transition-colors duration-300 shadow-lg">
+                      <button id="search-avail-btn" class="w-full bg-gold hover:bg-white text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm transition-colors duration-300 shadow-lg">
                           Check Availability
                       </button>
                   </div>
@@ -179,10 +181,10 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div class="relative reveal bg-[#14161a] rounded-sm p-2 z-0">
                 <div class="w-11/12 ml-auto z-0">
-                    <img src="https://images.unsplash.com/photo-1618773928120-2c70b2df2836?q=80&w=2070&auto=format&fit=crop" alt="Adulala Luxury Sanctuary" class="rounded-sm shadow-2xl relative object-cover h-[450px] w-full z-0"/>
+                    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070&auto=format&fit=crop" alt="Adulala Luxury Sanctuary" class="rounded-sm shadow-2xl relative object-cover h-[450px] w-full z-0"/>
                 </div>
                 <div class="absolute bottom-[-8%] left-0 w-2/3 transform -translate-y-4 z-10">
-                    <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2070&auto=format&fit=crop" alt="Bespoke Poolside View" class="rounded-sm shadow-2xl border-[8px] border-obsidian object-cover h-[280px] w-full"/>
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2070&auto=format&fit=crop" alt="Bespoke Poolside View" class="rounded-sm shadow-2xl border-[8px] border-obsidian object-cover h-[280px] w-full"/>
                 </div>
             </div>
             
@@ -196,7 +198,7 @@
                     <p>We design our spaces with natural basalt stone, rich local wood, and bright gold accents that glow beautifully under the Ethiopian sun.</p>
                 </div>
                 <div class="mt-8">
-                    <button onclick="window.openBookingFlow(1)" class="inline-flex items-center text-white border-b-2 border-gold pb-2 hover:text-gold transition-colors uppercase tracking-widest text-xs font-bold gap-3">
+                    <button data-booking-step="1" class="inline-flex items-center text-white border-b-2 border-gold pb-2 hover:text-gold transition-colors uppercase tracking-widest text-xs font-bold gap-3">
                         Book a Stay <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -213,7 +215,6 @@
                 <div class="w-16 h-[2px] bg-gold mx-auto mt-4"></div>
             </div>
 
-            <!-- FIXED: Icons dynamically loaded on DOM render to ensure visibility -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
                 <div class="reveal bg-obsidian/40 border border-white/5 p-6 rounded-md hover:border-gold/30 transition-all duration-300 h-full">
                     <div class="text-gold mb-4"><i data-lucide="wifi" class="w-8 h-8"></i></div>
@@ -289,9 +290,9 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000">
-                <div class="reveal tilt-card-wrapper" onclick="window.reserveRoom('Executive Suite', 210)">
+                <div class="reveal tilt-card-wrapper" data-reserve-room="Executive Suite" data-reserve-price="210">
                     <div class="tilt-card relative h-[480px] rounded-lg overflow-hidden cursor-pointer shadow-xl group bg-charcoal">
-                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074&auto=format&fit=crop" alt="Executive Lakeview Suite" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+                        <img src="https://images.unsplash.com/photo-1618773928120-2c70b2df2836?q=80&w=2070&auto=format&fit=crop" alt="Executive Lakeview Suite" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
                         <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-black/25 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500"></div>
                         <div class="absolute top-6 left-6 bg-gold text-obsidian text-[10px] tracking-widest uppercase font-bold px-3 py-1 rounded-sm">Best Seller</div>
                         <div class="absolute bottom-0 left-0 w-full p-6">
@@ -305,9 +306,9 @@
                     </div>
                 </div>
 
-                <div class="reveal tilt-card-wrapper" onclick="window.reserveRoom('Deluxe Villa', 350)" style="transition-delay: 150ms;">
+                <div class="reveal tilt-card-wrapper" data-reserve-room="Deluxe Villa" data-reserve-price="350" style="transition-delay: 150ms;">
                     <div class="tilt-card relative h-[480px] rounded-lg overflow-hidden cursor-pointer shadow-xl group bg-charcoal">
-                        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=2070&auto=format&fit=crop" alt="Presidential Villa" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+                        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=2070&auto=format&fit=crop" alt="Presidential Villa" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
                         <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-black/25 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500"></div>
                         <div class="absolute bottom-0 left-0 w-full p-6">
                             <h3 class="font-serif text-xl text-white mb-2">Deluxe Villa</h3>
@@ -320,9 +321,9 @@
                     </div>
                 </div>
 
-                <div class="reveal tilt-card-wrapper" onclick="window.reserveRoom('Deluxe Room', 160)" style="transition-delay: 300ms;">
+                <div class="reveal tilt-card-wrapper" data-reserve-room="Deluxe Room" data-reserve-price="160" style="transition-delay: 300ms;">
                     <div class="tilt-card relative h-[480px] rounded-lg overflow-hidden cursor-pointer shadow-xl group bg-charcoal">
-                        <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1974&auto=format&fit=crop" alt="Deluxe Room" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
+                        <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=2070&auto=format&fit=crop" alt="Deluxe Room" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"/>
                         <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-black/25 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-500"></div>
                         <div class="absolute bottom-0 left-0 w-full p-6">
                             <h3 class="font-serif text-xl text-white mb-2">Deluxe Room</h3>
@@ -341,15 +342,15 @@
     <!-- --- Section 4: The Wellness Pillars --- -->
     <section id="wellness" class="relative h-[80vh] min-h-[600px] flex items-center bg-obsidian overflow-hidden z-10">
         <div id="wellness-bg-spa" class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100 bg-[#14161a]">
-            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070&auto=format&fit=crop" alt="Spa Experience" class="w-full h-full object-cover">
+            <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=2070&auto=format&fit=crop" alt="Spa Experience" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/70"></div>
         </div>
         <div id="wellness-bg-sauna" class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0 bg-[#14161a]">
-            <img src="https://images.unsplash.com/photo-1596178055452-959fb9e1951d?q=80&w=2070&auto=format&fit=crop" alt="Thermal Sauna" class="w-full h-full object-cover">
+            <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=2070&auto=format&fit=crop" alt="Thermal Sauna" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/70"></div>
         </div>
         <div id="wellness-bg-salon" class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0 bg-[#14161a]">
-            <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=2069&auto=format&fit=crop" alt="Bespoke Hair Salon" class="w-full h-full object-cover">
+            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=2069&auto=format&fit=crop" alt="Bespoke Hair Salon" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-black/70"></div>
         </div>
 
@@ -357,13 +358,13 @@
             <div class="flex flex-col justify-center">
                 <p class="text-gold uppercase tracking-[0.3em] text-xs font-semibold mb-6">Rest & Relaxation</p>
                 <div class="space-y-6">
-                    <button onclick="window.switchWellness('spa')" class="wellness-tab text-left block group focus:outline-none">
+                    <button data-wellness-trigger="spa" class="wellness-tab text-left block group focus:outline-none">
                         <h3 id="wellness-title-spa" class="font-serif text-3xl md:text-5xl text-gold transition-colors duration-500 tracking-wider">Spa Services</h3>
                     </button>
-                    <button onclick="window.switchWellness('sauna')" class="wellness-tab text-left block group focus:outline-none">
+                    <button data-wellness-trigger="sauna" class="wellness-tab text-left block group focus:outline-none">
                         <h3 id="wellness-title-sauna" class="font-serif text-3xl md:text-5xl text-gray-500 hover:text-gray-300 transition-colors duration-500 tracking-wider">Hot Sauna</h3>
                     </button>
-                    <button onclick="window.switchWellness('salon')" class="wellness-tab text-left block group focus:outline-none">
+                    <button data-wellness-trigger="salon" class="wellness-tab text-left block group focus:outline-none">
                         <h3 id="wellness-title-salon" class="font-serif text-3xl md:text-5xl text-gray-500 hover:text-gray-300 transition-colors duration-500 tracking-wider">Beauty Salon</h3>
                     </button>
                 </div>
@@ -375,7 +376,7 @@
                     <p id="panel-desc" class="text-gray-300 font-light leading-relaxed mb-6 text-sm">
                         Refresh your mind and body. We offer relaxing massage therapies, facial care, and premium oil rituals.
                     </p>
-                    <button onclick="window.openBookingFlow(1)" class="text-gold uppercase tracking-[0.2em] text-xs font-semibold border border-gold px-6 py-3 hover:bg-gold hover:text-obsidian transition-colors duration-300">
+                    <button data-booking-step="1" class="text-gold uppercase tracking-[0.2em] text-xs font-semibold border border-gold px-6 py-3 hover:bg-gold hover:text-obsidian transition-colors duration-300">
                         Book Service
                     </button>
                 </div>
@@ -419,7 +420,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div class="reveal">
                     <div class="aspect-[4/3] overflow-hidden rounded-sm shadow-2xl relative group bg-[#14161a]">
-                        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=2070&auto=format&fit=crop" alt="Amusement Park" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop" alt="Amusement Park" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                     </div>
                 </div>
                 <div class="reveal lg:pl-10">
@@ -480,7 +481,7 @@
             </div>
             
             <div class="reveal">
-                <form onsubmit="event.preventDefault(); window.openBookingFlow(1);" class="glass-panel p-6 md:p-8 rounded-lg shadow-2xl">
+                <form id="bottom-inquiry-form" class="glass-panel p-6 md:p-8 rounded-lg shadow-2xl">
                     <h3 class="font-serif text-xl text-white mb-6">Book or Inquire</h3>
                     <button type="submit" class="w-full bg-gold text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:bg-white transition-colors duration-300">
                         Launch Reservation Engine
@@ -517,7 +518,7 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-600 font-light uppercase tracking-widest gap-4">
             <p>&copy; 2026 Adulala Resort & Spa. Developed by Luxury Systems.</p>
             <div class="flex space-x-4">
-                <a href="#" onclick="window.openManagerDashboard(event)" class="hover:text-gold transition-colors">Admin Dashboard</a>
+                <button id="admin-pms-link" class="hover:text-gold transition-colors font-medium">Admin Dashboard</button>
                 <a href="#" class="hover:text-gold transition-colors">Terms</a>
             </div>
         </div>
@@ -539,7 +540,7 @@
                         <span class="text-gray-600">/</span>
                         <span id="step-label-3" class="text-gray-500">3. Checkout</span>
                     </div>
-                    <button onclick="window.closeBookingFlow()" class="text-gray-400 hover:text-white transition-colors p-2">
+                    <button id="close-booking-btn" class="text-gray-400 hover:text-white transition-colors p-2">
                         <i data-lucide="x" class="w-6 h-6"></i>
                     </button>
                 </div>
@@ -567,9 +568,9 @@
                                 <p class="text-gray-500 text-xs">Maximum 3 rooms per reservation</p>
                             </div>
                             <div class="flex items-center space-x-4">
-                                <button onclick="window.updateCounter('rooms', -1)" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-white flex items-center justify-center transition-colors focus:outline-none">-</button>
+                                <button data-counter-type="rooms" data-counter-delta="-1" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-white flex items-center justify-center transition-colors focus:outline-none">-</button>
                                 <span id="count-rooms" class="text-white font-medium text-lg w-4 text-center">1</span>
-                                <button onclick="window.updateCounter('rooms', 1)" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-gold flex items-center justify-center transition-colors focus:outline-none">+</button>
+                                <button data-counter-type="rooms" data-counter-delta="1" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-gold flex items-center justify-center transition-colors focus:outline-none">+</button>
                             </div>
                         </div>
                         <div class="flex items-center justify-between">
@@ -578,9 +579,9 @@
                                 <p class="text-gray-500 text-xs">Ages 12 and above</p>
                             </div>
                             <div class="flex items-center space-x-4">
-                                <button onclick="window.updateCounter('adults', -1)" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-white flex items-center justify-center transition-colors focus:outline-none">-</button>
+                                <button data-counter-type="adults" data-counter-delta="-1" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-white flex items-center justify-center transition-colors focus:outline-none">-</button>
                                 <span id="count-adults" class="text-white font-medium text-lg w-4 text-center">2</span>
-                                <button onclick="window.updateCounter('adults', 1)" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-gold flex items-center justify-center transition-colors focus:outline-none">+</button>
+                                <button data-counter-type="adults" data-counter-delta="1" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-gold flex items-center justify-center transition-colors focus:outline-none">+</button>
                             </div>
                         </div>
                         <div class="flex items-center justify-between">
@@ -589,14 +590,14 @@
                                 <p class="text-gray-500 text-xs">Under 12 years of age</p>
                             </div>
                             <div class="flex items-center space-x-4">
-                                <button onclick="window.updateCounter('children', -1)" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-white flex items-center justify-center transition-colors focus:outline-none">-</button>
+                                <button data-counter-type="children" data-counter-delta="-1" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-white flex items-center justify-center transition-colors focus:outline-none">-</button>
                                 <span id="count-children" class="text-white font-medium text-lg w-4 text-center">0</span>
-                                <button onclick="window.updateCounter('children', 1)" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-gold flex items-center justify-center transition-colors focus:outline-none">+</button>
+                                <button data-counter-type="children" data-counter-delta="1" class="w-10 h-10 rounded-full border border-gray-700 hover:border-gold text-gold flex items-center justify-center transition-colors focus:outline-none">+</button>
                             </div>
                         </div>
                     </div>
 
-                    <button onclick="window.goToStep(2)" class="w-full bg-gold text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:bg-white transition-colors duration-300">
+                    <button id="step1-continue-btn" class="w-full bg-gold text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:bg-white transition-colors duration-300">
                         Continue to Room selection
                     </button>
                 </div>
@@ -607,8 +608,8 @@
                     <p class="text-gray-400 text-xs mb-8">Rates dynamically calculated based on stay duration.</p>
                     
                     <div class="space-y-6 mb-8 max-h-[300px] overflow-y-auto pr-2">
-                        <div id="room-opt-1" onclick="window.selectFlowRoom('Executive Suite', 210, 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=300')" class="flex items-center p-4 border border-gold rounded-lg cursor-pointer bg-charcoal/50 transition-all">
-                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=300" class="w-20 h-20 object-cover rounded-md mr-4" />
+                        <div id="room-opt-1" class="room-selector-item flex items-center p-4 border border-gold rounded-lg cursor-pointer bg-charcoal/50 transition-all" data-room-type="Executive Suite" data-room-price="210" data-room-img="https://images.unsplash.com/photo-1618773928120-2c70b2df2836?q=80&w=300">
+                            <img src="https://images.unsplash.com/photo-1618773928120-2c70b2df2836?q=80&w=300" class="w-20 h-20 object-cover rounded-md mr-4" />
                             <div class="flex-grow">
                                 <h4 class="text-white font-serif font-bold">Executive Suite</h4>
                                 <p class="text-gray-400 text-xs">$210 / night</p>
@@ -618,8 +619,8 @@
                                 <span class="text-[10px] text-gray-500 uppercase">Select</span>
                             </div>
                         </div>
-                        <div id="room-opt-2" onclick="window.selectFlowRoom('Deluxe Villa', 350, 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=300')" class="flex items-center p-4 border border-white/5 rounded-lg cursor-pointer hover:border-gold/30 transition-all">
-                            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=300" class="w-20 h-20 object-cover rounded-md mr-4" />
+                        <div id="room-opt-2" class="room-selector-item flex items-center p-4 border border-white/5 rounded-lg cursor-pointer hover:border-gold/30 transition-all" data-room-type="Deluxe Villa" data-room-price="350" data-room-img="https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=300">
+                            <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=300" class="w-20 h-20 object-cover rounded-md mr-4" />
                             <div class="flex-grow">
                                 <h4 class="text-white font-serif font-bold">Deluxe Villa</h4>
                                 <p class="text-gray-400 text-xs">$350 / night</p>
@@ -629,8 +630,8 @@
                                 <span class="text-[10px] text-gray-500 uppercase">Select</span>
                             </div>
                         </div>
-                        <div id="room-opt-3" onclick="window.selectFlowRoom('Deluxe Room', 160, 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=300')" class="flex items-center p-4 border border-white/5 rounded-lg cursor-pointer hover:border-gold/30 transition-all">
-                            <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=300" class="w-20 h-20 object-cover rounded-md mr-4" />
+                        <div id="room-opt-3" class="room-selector-item flex items-center p-4 border border-white/5 rounded-lg cursor-pointer hover:border-gold/30 transition-all" data-room-type="Deluxe Room" data-room-price="160" data-room-img="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=300">
+                            <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=300" class="w-20 h-20 object-cover rounded-md mr-4" />
                             <div class="flex-grow">
                                 <h4 class="text-white font-serif font-bold">Deluxe Room</h4>
                                 <p class="text-gray-400 text-xs">$160 / night</p>
@@ -643,8 +644,8 @@
                     </div>
 
                     <div class="flex justify-between space-x-4">
-                        <button onclick="window.goToStep(1)" class="w-1/2 border border-gray-600 text-white font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:border-white transition-colors duration-300">Back</button>
-                        <button onclick="window.goToStep(3)" class="w-1/2 bg-gold text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:bg-white transition-colors duration-300">Continue</button>
+                        <button id="step2-back-btn" class="w-1/2 border border-gray-600 text-white font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:border-white transition-colors duration-300">Back</button>
+                        <button id="step2-continue-btn" class="w-1/2 bg-gold text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:bg-white transition-colors duration-300">Continue</button>
                     </div>
                 </div>
 
@@ -691,8 +692,8 @@
                     </div>
 
                     <div class="flex justify-between space-x-4">
-                        <button onclick="window.goToStep(2)" class="w-1/2 border border-gray-600 text-white font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:border-white transition-colors duration-300">Back</button>
-                        <button id="complete-btn" onclick="window.processBooking()" class="w-1/2 bg-gold text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:bg-white transition-colors duration-300 flex justify-center items-center">Complete Reservation</button>
+                        <button id="step3-back-btn" class="w-1/2 border border-gray-600 text-white font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:border-white transition-colors duration-300">Back</button>
+                        <button id="complete-btn" class="w-1/2 bg-gold text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:bg-white transition-colors duration-300 flex justify-center items-center">Complete Reservation</button>
                     </div>
                     <div id="booking-error" class="text-red-500 text-xs text-center mt-3 hidden">Please fill in all required guest fields.</div>
                 </div>
@@ -707,7 +708,7 @@
                     <p class="text-gray-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
                         A beautiful itinerary confirmation has been routed to your email address. We have updated our PMS systems. We look forward to hosting you at Adulala Resort & Spa.
                     </p>
-                    <button onclick="window.closeBookingFlow()" class="px-8 py-3 bg-gold text-obsidian font-bold uppercase tracking-wider text-xs rounded-sm hover:bg-white transition-colors duration-300">
+                    <button id="close-portal-success-btn" class="px-8 py-3 bg-gold text-obsidian font-bold uppercase tracking-wider text-xs rounded-sm hover:bg-white transition-colors duration-300">
                         Close Portal
                     </button>
                 </div>
@@ -718,7 +719,7 @@
                 <div>
                     <h4 class="font-serif text-lg text-white mb-6 border-b border-white/5 pb-4">Stay Summary</h4>
                     <div id="summary-room-desc" class="flex items-center mb-6">
-                        <img id="summary-img" src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=300" class="w-16 h-16 object-cover rounded-md mr-4" />
+                        <img id="summary-img" src="https://images.unsplash.com/photo-1618773928120-2c70b2df2836?q=80&w=300" class="w-16 h-16 object-cover rounded-md mr-4" />
                         <div>
                             <h5 id="summary-room-name" class="text-white text-sm font-semibold">Executive Suite</h5>
                             <p id="summary-guest-count" class="text-gray-500 text-xs">2 Adults | 1 Room</p>
@@ -765,6 +766,31 @@
         </div>
     </div>
 
+    <!-- ======================================================= -->
+    <!--  HOTEL MANAGER CREDENTIAL CHECK PANEL (PIN CODE ENTRY) -->
+    <!-- ======================================================= -->
+    <div id="admin-login-modal" class="fixed inset-0 z-[65] hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md rounded-lg shadow-2xl p-8 border border-gold/20 text-center">
+            <div class="w-12 h-12 bg-gold/10 border border-gold/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="lock" class="w-6 h-6 text-gold"></i>
+            </div>
+            <h3 class="font-serif text-2xl text-white mb-2">Central PMS Authentication</h3>
+            <p class="text-gray-400 text-xs mb-6 uppercase tracking-wider">Authorized Adulala Personnel Only</p>
+            
+            <div class="mb-6">
+                <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2 font-semibold">Enter 4-Digit Passcode</label>
+                <input id="admin-pincode" type="password" maxlength="4" placeholder="••••" class="w-32 bg-obsidian border-2 border-gray-700 focus:border-gold rounded text-center tracking-[0.6em] text-2xl py-3 text-white font-bold focus:outline-none transition-all">
+                <div id="admin-login-error" class="text-red-500 text-xs mt-3 hidden">Invalid Passcode. Please try again.</div>
+            </div>
+
+            <div class="flex justify-center space-x-3 text-xs">
+                <button id="cancel-admin-login-btn" class="px-6 py-3 border border-gray-700 text-gray-300 rounded hover:border-white transition-all uppercase tracking-widest text-[10px]">Cancel</button>
+                <button id="submit-admin-login-btn" class="px-6 py-3 bg-gold text-obsidian font-bold rounded hover:bg-white transition-all uppercase tracking-widest text-[10px]">Login</button>
+            </div>
+            <p class="text-[10px] text-gray-600 mt-6 font-light">Demo Passcode is: <span class="text-gold/55 font-bold">1234</span></p>
+        </div>
+    </div>
+
     <!-- ========================================== -->
     <!--  HOTEL MANAGER DASHBOARD (ADMIN VIEW)      -->
     <!-- ========================================== -->
@@ -773,14 +799,14 @@
             <div class="p-6 border-b border-white/5 flex justify-between items-center bg-obsidian">
                 <div>
                     <h3 class="font-serif text-2xl text-white">Manager Dashboard</h3>
-                    <p class="text-gold text-xs uppercase tracking-widest">Live Cloudbeds PMS Sync</p>
+                    <p class="text-gold text-xs uppercase tracking-widest">Live Cloudbeds PMS Sync Ledger</p>
                 </div>
-                <button onclick="window.closeManagerDashboard()" class="text-gray-400 hover:text-white p-2">
+                <button id="close-admin-dashboard-btn" class="text-gray-400 hover:text-white p-2">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
             <div class="p-6 overflow-y-auto flex-1">
-                <div class="grid grid-cols-4 gap-4 mb-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div class="bg-obsidian border border-white/5 p-4 rounded-md">
                         <p class="text-gray-400 text-xs uppercase">Total Reservations</p>
                         <h4 id="admin-total-count" class="text-2xl text-white font-serif mt-1">0</h4>
@@ -815,8 +841,8 @@
     </div>
 
     <!-- Firebase SDK Setup & Core Application Logic -->
+    <!-- -->
     <script type="module">
-        // Import Firebase modules securely
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
         import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
@@ -824,32 +850,65 @@
         // 1. Initialize System & Setup Globals
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'adulala-resort-app';
-        let db, auth, currentUser;
+        let db = null;
+        let auth = null;
+        let currentUser = null;
 
         if (Object.keys(firebaseConfig).length > 0) {
-            const app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
 
-            // Strict Authenticate Rule: Must Sign In First
-            signInAnonymously(auth).catch((error) => console.error("Firebase Auth Error:", error));
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    currentUser = user;
-                    console.log("System Connected. Ready to accept bookings.");
-                }
-            });
+                signInAnonymously(auth).catch((error) => console.error("Firebase Auth Error:", error));
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        currentUser = user;
+                        console.log("System Connected. Secure Database Active.");
+                    }
+                });
+            } catch (err) {
+                console.error("Firebase init failed, switching to local mode:", err);
+            }
         } else {
-            console.warn("Firebase not injected. Running in offline UI mode.");
+            console.warn("No firebase config found. Operating in simulation-save mode.");
         }
 
-        // Re-init Lucide Icons properly now that body is fully loaded
+        // Initialize Icons
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+            
+            // Dynamic image fallback loader to prevent blank spots on deleted unsplash links
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('error', () => {
+                    img.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000'; 
+                });
+            });
+        });
+
+        // =====================================================
+        //  UI COMPILER & SCROLL OBSERVATION LOGIC (FIXES HIDDEN BLOCKS)
+        // =====================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                reveals.forEach(r => observer.observe(r));
+            } else {
+                // If browser or sandbox rejects observer, immediately reveal everything
+                reveals.forEach(r => r.classList.add('active'));
+            }
         });
 
         // ==========================================
-        //  UI & STATE LOGIC
+        //  UI STATE & LOGIC
         // ==========================================
         window.bookingState = {
             checkIn: '2026-06-22',
@@ -859,10 +918,102 @@
             children: 0,
             selectedRoom: 'Executive Suite',
             roomPrice: 210,
-            roomImg: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=300',
-            totalCalculatedPrice: 1690.50 // Base fallback
+            roomImg: 'https://images.unsplash.com/photo-1618773928120-2c70b2df2836?q=80&w=300',
+            totalCalculatedPrice: 1690.50
         };
 
+        // Smart Scrolling Navbar animation
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (!nav) return;
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > 50) {
+                nav.classList.remove('bg-transparent', 'py-6');
+                nav.classList.add('bg-obsidian/95', 'backdrop-blur-md', 'py-4', 'shadow-xl');
+            } else {
+                nav.classList.add('bg-transparent', 'py-6');
+                nav.classList.remove('bg-obsidian/95', 'backdrop-blur-md', 'py-4', 'shadow-xl');
+            }
+
+            if (currentScrollY > lastScrollY && currentScrollY > 150) {
+                nav.classList.add('-translate-y-full'); 
+            } else {
+                nav.classList.remove('-translate-y-full'); 
+            }
+            lastScrollY = currentScrollY;
+        });
+
+        // Overlay Menu togglers
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        function toggleMenu(open) {
+            if (open) {
+                menuOverlay.classList.remove('-translate-y-full', 'opacity-0');
+                menuOverlay.classList.add('translate-y-0', 'opacity-100');
+            } else {
+                menuOverlay.classList.remove('translate-y-0', 'opacity-100');
+                menuOverlay.classList.add('-translate-y-full', 'opacity-0');
+            }
+        }
+        if(menuBtn) menuBtn.addEventListener('click', () => toggleMenu(true));
+        if(closeMenuBtn) closeMenuBtn.addEventListener('click', () => toggleMenu(false));
+        menuLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+
+        // Wellness Pillars Switcher
+        const wellnessContents = {
+            spa: {
+                title: 'Spa Services',
+                desc: 'Refresh your mind and body. We offer relaxing massage therapies, facial care, and premium oil rituals.'
+            },
+            sauna: {
+                title: 'Hot Sauna',
+                desc: 'Flush toxins and refresh your body inside our premium heated pine sauna and relaxing eucalyptus-scented steam bath cabinets.'
+            },
+            salon: {
+                title: 'Beauty Salon',
+                desc: 'Step into our professional beauty salon for cuts, styling, conditioning, and luxury hair treatments hosted by top local stylists.'
+            }
+        };
+
+        window.switchWellness = (type) => {
+            ['spa', 'sauna', 'salon'].forEach(item => {
+                const bg = document.getElementById(`wellness-bg-${item}`);
+                const title = document.getElementById(`wellness-title-${item}`);
+                if (item === type) {
+                    if (bg) bg.classList.replace('opacity-0', 'opacity-100');
+                    if (title) {
+                        title.classList.remove('text-gray-500', 'hover:text-gray-300');
+                        title.classList.add('text-gold');
+                    }
+                } else {
+                    if (bg) bg.classList.replace('opacity-100', 'opacity-0');
+                    if (title) {
+                        title.classList.remove('text-gold');
+                        title.classList.add('text-gray-500', 'hover:text-gray-300');
+                    }
+                }
+            });
+
+            document.getElementById('panel-title').innerText = wellnessContents[type].title;
+            document.getElementById('panel-desc').innerText = wellnessContents[type].desc;
+        };
+
+        // Attach wellness tab event triggers programmatically to prevent inline race condition errors
+        document.querySelectorAll('[data-wellness-trigger]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const trigger = btn.getAttribute('data-wellness-trigger');
+                window.switchWellness(trigger);
+            });
+        });
+
+        // ==========================================
+        //  PREMIUM PROGRAMMATIC BOOKING ENGINE
+        // ==========================================
         window.openBookingFlow = (targetStep = 1) => {
             document.getElementById('booking-modal').classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
@@ -908,24 +1059,22 @@
             window.bookingState.roomPrice = price;
             window.bookingState.roomImg = imgUrl;
 
-            ['room-opt-1', 'room-opt-2', 'room-opt-3'].forEach(optId => {
-                const el = document.getElementById(optId);
-                if(el) {
-                    el.classList.remove('border-gold', 'bg-charcoal/50');
-                    el.classList.add('border-white/5');
-                }
+            document.querySelectorAll('.room-selector-item').forEach(el => {
+                el.classList.remove('border-gold', 'bg-charcoal/50');
+                el.classList.add('border-white/5');
             });
-            if (name === 'Executive Suite') document.getElementById('room-opt-1').classList.add('border-gold', 'bg-charcoal/50');
-            if (name === 'Deluxe Villa') document.getElementById('room-opt-2').classList.add('border-gold', 'bg-charcoal/50');
-            if (name === 'Deluxe Room') document.getElementById('room-opt-3').classList.add('border-gold', 'bg-charcoal/50');
+            
+            if (name === 'Executive Suite') document.getElementById('room-opt-1').classList.add('border-gold', 'bg-[#14161a]/50');
+            if (name === 'Deluxe Villa') document.getElementById('room-opt-2').classList.add('border-gold', 'bg-[#14161a]/50');
+            if (name === 'Deluxe Room') document.getElementById('room-opt-3').classList.add('border-gold', 'bg-[#14161a]/50');
 
             window.updateBookingSummary();
         };
 
         window.reserveRoom = (name, price) => {
-            let img = 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=300';
-            if (name === 'Deluxe Villa') img = 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=300';
-            if (name === 'Deluxe Room') img = 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=300';
+            let img = 'https://images.unsplash.com/photo-1618773928120-2c70b2df2836?q=80&w=300';
+            if (name === 'Deluxe Villa') img = 'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=300';
+            if (name === 'Deluxe Room') img = 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=300';
             window.selectFlowRoom(name, price, img);
             window.openBookingFlow(3); 
         };
@@ -953,7 +1102,7 @@
             const baseFare = window.bookingState.roomPrice * diffNights * window.bookingState.rooms;
             const tax = baseFare * 0.15;
             const total = baseFare + tax;
-            window.bookingState.totalCalculatedPrice = total; // Cache for DB
+            window.bookingState.totalCalculatedPrice = total; 
 
             document.getElementById('summary-base-fare').innerText = `$${baseFare.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             document.getElementById('summary-tax').innerText = `$${tax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -981,10 +1130,9 @@
         };
 
         // ==========================================
-        //  DATABASE INTEGRATION: PROCESS BOOKING
+        //  DATABASE CONNECTOR: PROCESS BOOKING
         // ==========================================
         window.processBooking = async () => {
-            // Validation
             const guestFirst = document.getElementById('guest-first').value.trim();
             const guestLast = document.getElementById('guest-last').value.trim();
             const guestEmail = document.getElementById('guest-email').value.trim();
@@ -999,7 +1147,6 @@
             const btn = document.getElementById('complete-btn');
             const originalText = btn.innerText;
             
-            // Simulating Cloudbeds Connectivity & Database Transaction
             btn.innerHTML = `
                 <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-obsidian inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -1024,17 +1171,19 @@
                 bookedAt: new Date().toISOString()
             };
 
-            // Database Save
             try {
                 if (db && currentUser) {
                     const reservationsRef = collection(db, 'artifacts', appId, 'public', 'data', 'reservations');
                     await addDoc(reservationsRef, bookingData);
-                    console.log("Success: Reservation synced to Cloudbeds/Firestore.");
+                    console.log("Database entry synchronized.");
                 } else {
-                    console.log("Offline mode: Simulated successful save.", bookingData);
+                    // Safe offline storage cache
+                    let simulatedData = JSON.parse(localStorage.getItem('adulala_demo_db') || '[]');
+                    simulatedData.push(bookingData);
+                    localStorage.setItem('adulala_demo_db', JSON.stringify(simulatedData));
+                    console.log("offline stored successfully.", bookingData);
                 }
                 
-                // Show Success Ticket
                 setTimeout(() => {
                     document.getElementById('conf-id').innerText = confId;
                     window.goToStep(4);
@@ -1043,39 +1192,55 @@
                 }, 1500);
 
             } catch (error) {
-                console.error("Booking failed:", error);
-                btn.innerHTML = "Sync Error. Try Again.";
+                console.error("Booking Error:", error);
+                btn.innerHTML = "Sync Failure. Try again.";
                 btn.disabled = false;
             }
         };
 
         // ==========================================
-        //  ADMIN DASHBOARD: READ FROM DATABASE
+        //  ADMIN AUTHENTICATION & SECURE PORTAL ACCESS
         // ==========================================
-        window.openManagerDashboard = async (e) => {
-            if(e) e.preventDefault();
+        window.tryAdminAuthenticate = () => {
+            const pincode = document.getElementById('admin-pincode').value.trim();
+            const err = document.getElementById('admin-login-error');
+            
+            // Passcode check: Demo manager PIN code is 1234
+            if (pincode === "1234") {
+                err.classList.add('hidden');
+                document.getElementById('admin-login-modal').classList.add('hidden');
+                document.getElementById('admin-pincode').value = ""; // flush input
+                window.openManagerDashboard();
+            } else {
+                err.classList.remove('hidden');
+                document.getElementById('admin-pincode').value = "";
+            }
+        };
+
+        window.openManagerDashboard = async () => {
             document.getElementById('admin-modal').classList.remove('hidden');
             const tbody = document.getElementById('admin-reservations-list');
             
-            if (!db || !currentUser) {
-                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Database not connected or offline mode.</td></tr>`;
-                return;
-            }
-
+            let databaseList = [];
+            
             try {
-                const reservationsRef = collection(db, 'artifacts', appId, 'public', 'data', 'reservations');
-                const snapshot = await getDocs(reservationsRef);
+                if (db && currentUser) {
+                    const reservationsRef = collection(db, 'artifacts', appId, 'public', 'data', 'reservations');
+                    const snapshot = await getDocs(reservationsRef);
+                    snapshot.forEach(doc => databaseList.push(doc.data()));
+                } else {
+                    // Pull from simulated local backup
+                    databaseList = JSON.parse(localStorage.getItem('adulala_demo_db') || '[]');
+                }
                 
+                // Newest first
+                databaseList.sort((a, b) => new Date(b.bookedAt) - new Date(a.bookedAt));
+
                 let html = '';
                 let totalCount = 0;
                 let totalRev = 0;
 
-                // Sort by newest in memory to avoid index requirements
-                let docsData = [];
-                snapshot.forEach(doc => docsData.push(doc.data()));
-                docsData.sort((a, b) => new Date(b.bookedAt) - new Date(a.bookedAt));
-
-                docsData.forEach(data => {
+                databaseList.forEach(data => {
                     totalCount++;
                     totalRev += data.totalAmountPaid;
                     
@@ -1100,15 +1265,129 @@
                 document.getElementById('admin-total-rev').innerText = `$${totalRev.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
 
             } catch(e) {
-                console.error("Fetch Error:", e);
-                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-red-500">Error loading data.</td></tr>`;
+                console.error("Dashboard database fetch error:", e);
+                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-red-500">Database offline or sandbox read blocked.</td></tr>`;
             }
         };
 
-        window.closeManagerDashboard = () => {
-            document.getElementById('admin-modal').classList.add('hidden');
-        };
+        // Programmatic Event Listener Mappings to eradicate click race-conditions
+        document.addEventListener('DOMContentLoaded', () => {
+            // General Booking Triggers
+            document.querySelectorAll('[data-booking-step]').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.openBookingFlow(parseInt(el.getAttribute('data-booking-step')));
+                });
+            });
+
+            // Trigger Search Availability widget btn
+            const searchBtn = document.getElementById('search-avail-btn');
+            if (searchBtn) searchBtn.addEventListener('click', window.triggerSearch);
+
+            // Trigger checkout modal inline calendar checks
+            document.getElementById('flow-in').addEventListener('change', window.updateBookingSummary);
+            document.getElementById('flow-out').addEventListener('change', window.updateBookingSummary);
+
+            // Counter listeners
+            document.querySelectorAll('[data-counter-type]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const type = btn.getAttribute('data-counter-type');
+                    const delta = parseInt(btn.getAttribute('data-counter-delta'));
+                    window.updateCounter(type, delta);
+                });
+            });
+
+            // Step selectors
+            const step1Cont = document.getElementById('step1-continue-btn');
+            if (step1Cont) step1Cont.addEventListener('click', () => window.goToStep(2));
+
+            const step2Back = document.getElementById('step2-back-btn');
+            if (step2Back) step2Back.addEventListener('click', () => window.goToStep(1));
+
+            const step2Cont = document.getElementById('step2-continue-btn');
+            if (step2Cont) step2Cont.addEventListener('click', () => window.goToStep(3));
+
+            const step3Back = document.getElementById('step3-back-btn');
+            if (step3Back) step3Back.addEventListener('click', () => window.goToStep(2));
+
+            const completeBtn = document.getElementById('complete-btn');
+            if (completeBtn) completeBtn.addEventListener('click', window.processBooking);
+
+            const closeBookingBtn = document.getElementById('close-booking-btn');
+            if (closeBookingBtn) closeBookingBtn.addEventListener('click', window.closeBookingFlow);
+
+            const closeSuccessBtn = document.getElementById('close-portal-success-btn');
+            if (closeSuccessBtn) closeSuccessBtn.addEventListener('click', window.closeBookingFlow);
+
+            const guestTrigger = document.getElementById('guest-display-trigger');
+            if (guestTrigger) guestTrigger.addEventListener('click', () => window.openBookingFlow(1));
+
+            // Room Click bindings
+            document.querySelectorAll('[data-reserve-room]').forEach(card => {
+                card.addEventListener('click', () => {
+                    const name = card.getAttribute('data-reserve-room');
+                    const price = parseInt(card.getAttribute('data-reserve-price'));
+                    window.reserveRoom(name, price);
+                });
+            });
+
+            document.querySelectorAll('.room-selector-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const name = item.getAttribute('data-room-type');
+                    const price = parseInt(item.getAttribute('data-room-price'));
+                    const img = item.getAttribute('data-room-img');
+                    window.selectFlowRoom(name, price, img);
+                });
+            });
+
+            // Admin Actions
+            const adminPmsLink = document.getElementById('admin-pms-link');
+            if (adminPmsLink) {
+                adminPmsLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('admin-login-modal').classList.remove('hidden');
+                });
+            }
+
+            const cancelLoginBtn = document.getElementById('cancel-admin-login-btn');
+            if (cancelLoginBtn) {
+                cancelLoginBtn.addEventListener('click', () => {
+                    document.getElementById('admin-login-modal').classList.add('hidden');
+                    document.getElementById('admin-pincode').value = "";
+                });
+            }
+
+            const submitLoginBtn = document.getElementById('submit-admin-login-btn');
+            if (submitLoginBtn) submitLoginBtn.addEventListener('click', window.tryAdminAuthenticate);
+
+            const closeDashboardBtn = document.getElementById('close-admin-dashboard-btn');
+            if (closeDashboardBtn) {
+                closeDashboardBtn.addEventListener('click', () => {
+                    document.getElementById('admin-modal').classList.add('hidden');
+                });
+            }
+        });
+
+        // 3D Tilt Card dynamic interaction physics
+        const tiltCards = document.querySelectorAll('.tilt-card-wrapper');
+        tiltCards.forEach(wrapper => {
+            const card = wrapper.querySelector('.tilt-card');
+            if (!card) return;
+            wrapper.addEventListener('mousemove', (e) => {
+                const rect = wrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -12;
+                const rotateY = ((x - centerX) / centerX) * 12;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
+            });
+            wrapper.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
 
     </script>
 </body>
-                    </html>
+    </html>
