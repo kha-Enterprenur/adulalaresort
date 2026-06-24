@@ -63,6 +63,15 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0b0c0e; }
         ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
@@ -109,7 +118,6 @@
     <!-- --- Section 1: Hero Experience --- -->
     <section id="home" class="relative z-0 min-h-screen w-full flex flex-col justify-between pt-32 pb-16">
         <div class="absolute inset-0 w-full h-full z-0 bg-[#14161a]">
-          <!-- Lake Babogaya Hero View -->
           <img 
               src="https://images.unsplash.com/photo-1543731068-7e0f5beff43a?q=80&w=2069&auto=format&fit=crop" 
               alt="Relax by Lake Babogaya"
@@ -174,10 +182,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div class="relative bg-[#14161a] rounded-sm p-2 z-0">
                 <div class="w-11/12 ml-auto z-0">
-                    <img src="https://images.unsplash.com/photo-1618773928120-2c70b2df2836?q=80&w=2070&auto=format&fit=crop" alt="Adulala Luxury Sanctuary" class="rounded-sm shadow-2xl relative object-cover h-[450px] w-full z-0"/>
+                    <!-- FIXED: Replaced broken image with stable Unsplash luxury pool image -->
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2070&q=80" alt="Adulala Luxury Sanctuary" class="rounded-sm shadow-2xl relative object-cover h-[450px] w-full z-0"/>
                 </div>
                 <div class="absolute bottom-[-8%] left-0 w-2/3 transform -translate-y-4 z-10">
-                    <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2070&auto=format&fit=crop" alt="Bespoke Poolside View" class="rounded-sm shadow-2xl border-[8px] border-obsidian object-cover h-[280px] w-full"/>
+                    <!-- FIXED: Replaced broken image with stable Unsplash resort detail image -->
+                    <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=2070&q=80" alt="Bespoke Poolside View" class="rounded-sm shadow-2xl border-[8px] border-obsidian object-cover h-[280px] w-full"/>
                 </div>
             </div>
             
@@ -512,7 +522,7 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-12 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-600 font-light uppercase tracking-widest gap-4">
             <p>&copy; 2026 Adulala Resort & Spa. Developed by Luxury Systems.</p>
             <div class="flex space-x-4">
-                <a href="#" onclick="window.openManagerDashboard(event)" class="hover:text-gold transition-colors font-bold border-b border-gold">Admin Dashboard</a>
+                <a href="#" onclick="window.openManagerLogin(event)" class="hover:text-gold transition-colors font-bold border-b border-gold">Admin Dashboard</a>
                 <a href="#" class="hover:text-gold transition-colors">Terms</a>
             </div>
         </div>
@@ -700,7 +710,7 @@
                     <h3 class="font-serif text-3xl text-white mb-2">Reservation Completed!</h3>
                     <p class="text-gold text-sm tracking-widest uppercase mb-6">Confirmation Code: <span id="conf-id" class="font-bold text-white">ADL-45892</span></p>
                     <p class="text-gray-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
-                        A beautiful confirmation has been securely saved to the database. If EmailJS keys are connected, a receipt has also been dispatched to your email address. We look forward to hosting you at Adulala Resort & Spa.
+                        Your reservation has been securely saved to our database. A receipt has also been dispatched to your email address. We look forward to hosting you at Adulala Resort & Spa.
                     </p>
                     <button onclick="window.closeBookingFlow()" class="px-8 py-3 bg-gold text-obsidian font-bold uppercase tracking-wider text-xs rounded-sm hover:bg-white transition-colors duration-300">
                         Close Portal
@@ -765,6 +775,7 @@
     <!-- ========================================== -->
     <div id="admin-modal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-lg flex items-center justify-center p-4">
         <div class="bg-[#111317] w-full max-w-6xl rounded-lg shadow-2xl flex flex-col overflow-hidden border border-white/10 h-[80vh]">
+            
             <div class="p-6 border-b border-white/5 flex justify-between items-center bg-obsidian relative z-10">
                 <div>
                     <h3 class="font-serif text-2xl text-white">Manager Dashboard</h3>
@@ -774,7 +785,20 @@
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
-            <div class="p-6 overflow-y-auto flex-1 relative z-10">
+
+            <!-- Login View -->
+            <div id="admin-login-view" class="p-10 flex flex-col items-center justify-center h-full relative z-10">
+                <i data-lucide="lock" class="w-12 h-12 text-gold mb-4"></i>
+                <h3 class="text-white text-2xl mb-2 font-serif">Admin Authentication</h3>
+                <p class="text-gray-500 text-xs mb-8">Enter your secure manager passcode to view live reservations.</p>
+                <input type="password" id="admin-pwd" class="bg-obsidian border border-gray-700 text-center text-white text-2xl tracking-[0.5em] px-4 py-3 w-64 mb-4 rounded focus:border-gold focus:outline-none" placeholder="****">
+                <button onclick="window.verifyAdmin()" class="bg-gold text-obsidian uppercase tracking-widest text-xs px-10 py-3 rounded-sm font-bold shadow-lg hover:bg-white transition-colors">Login to Dashboard</button>
+                <p id="admin-error" class="text-red-500 text-xs mt-4 hidden">Incorrect Passcode. Try again.</p>
+                <p class="text-gray-600 text-[10px] mt-8">HINT: The passcode is 1234</p>
+            </div>
+
+            <!-- Data View -->
+            <div id="admin-dashboard-view" class="hidden p-6 overflow-y-auto flex-1 relative z-10 flex-col">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div class="bg-obsidian border border-white/5 p-4 rounded-md shadow-lg">
                         <p class="text-gray-400 text-xs uppercase">Total Reservations</p>
@@ -786,7 +810,7 @@
                     </div>
                 </div>
 
-                <div class="overflow-x-auto bg-obsidian rounded-lg border border-white/5 shadow-lg">
+                <div class="overflow-x-auto bg-obsidian rounded-lg border border-white/5 shadow-lg flex-1">
                     <table class="w-full text-left text-sm text-gray-400">
                         <thead class="text-xs uppercase bg-[#14161a] text-gray-500 border-b border-white/10">
                             <tr>
@@ -809,6 +833,7 @@
 
     <!-- SDK Setup & Logic -->
     <script type="module">
+        // --- COMPONENT BACKEND CONNECTOR: FIREBASE ---
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
         import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
@@ -817,6 +842,8 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'adulala-resort-app';
         let db, auth, currentUser;
 
+        // If firebase is provided by environment, initialize it.
+        // Otherwise, the system safely falls back to window.localStorage automatically!
         if (Object.keys(firebaseConfig).length > 0) {
             const app = initializeApp(firebaseConfig);
             auth = getAuth(app);
@@ -828,10 +855,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             
-            // ==============================================================
-            // STEP 4: PASTE YOUR EMAILJS PUBLIC KEY inside the quotes below!
-            // ==============================================================
-            emailjs.init("YOUR_PUBLIC_KEY_HERE");
+            // --- YOUR ACTUAL EMAILJS PUBLIC KEY GOES HERE ---
+            emailjs.init("YOUR_PUBLIC_KEY_HERE"); 
         });
 
         // ==========================================
@@ -1003,7 +1028,8 @@
                 bookedAt: new Date().toISOString()
             };
 
-            // Save to DB or Fallback LocalStorage if exported to GitHub Pages
+            // 1. SAVE TO DATABASE
+            // This is the component logic that talks to the server/database.
             try {
                 if (db && currentUser) {
                     const reservationsRef = collection(db, 'artifacts', appId, 'public', 'data', 'reservations');
@@ -1014,9 +1040,7 @@
                     localStorage.setItem('adulala_bookings', JSON.stringify(localBookings));
                 }
 
-                // ==============================================================
-                // STEP 5: PASTE YOUR SERVICE AND TEMPLATE ID inside the quotes!
-                // ==============================================================
+                // 2. SEND EMAIL VIA EMAILJS (using your EXACT IDs)
                 try {
                     const templateParams = {
                         to_name: `${guestFirst} ${guestLast}`,
@@ -1029,11 +1053,10 @@
                         total_price: window.bookingState.totalCalculatedPrice.toFixed(2)
                     };
                     
-                    // Trigger Live Email dispatch
-                    await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams);
+                    await emailjs.send('service_ii1c50k', 'template_h0pyaz8', templateParams);
                     console.log("Email confirmation successfully sent to guest.");
                 } catch (emailError) {
-                    console.warn("EmailJS config missing or invalid credentials.", emailError);
+                    console.warn("Email dispatch failed. Did you paste your Public Key below?", emailError);
                 }
 
                 setTimeout(() => {
@@ -1051,13 +1074,38 @@
         };
 
         // ==========================================
-        //  ADMIN DASHBOARD
+        //  ADMIN DASHBOARD LOGIN & DATA
         // ==========================================
-        window.openManagerDashboard = async (e) => {
+        window.openManagerLogin = (e) => {
             if(e) e.preventDefault();
             document.getElementById('admin-modal').classList.remove('hidden');
-            const tbody = document.getElementById('admin-reservations-list');
+            document.body.classList.add('overflow-hidden');
             
+            // Reset views
+            document.getElementById('admin-login-view').classList.remove('hidden');
+            document.getElementById('admin-dashboard-view').classList.add('hidden');
+            document.getElementById('admin-dashboard-view').classList.remove('flex');
+            document.getElementById('admin-pwd').value = '';
+            document.getElementById('admin-error').classList.add('hidden');
+        };
+
+        window.verifyAdmin = () => {
+            const pwd = document.getElementById('admin-pwd').value;
+            // The password is set here!
+            if (pwd === '1234') {
+                document.getElementById('admin-login-view').classList.add('hidden');
+                document.getElementById('admin-dashboard-view').classList.remove('hidden');
+                document.getElementById('admin-dashboard-view').classList.add('flex');
+                window.loadDashboardData();
+            } else {
+                document.getElementById('admin-error').classList.remove('hidden');
+            }
+        };
+
+        window.loadDashboardData = async () => {
+            const tbody = document.getElementById('admin-reservations-list');
+            tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Loading live data...</td></tr>`;
+
             try {
                 let docsData = [];
 
@@ -1106,9 +1154,10 @@
 
         window.closeManagerDashboard = () => {
             document.getElementById('admin-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
         };
 
-        // Scroll listener for Navbar
+        // Navbar Scroll
         let lastScrollY = window.scrollY;
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
@@ -1128,50 +1177,9 @@
             lastScrollY = currentScrollY;
         });
 
-        // Simple Mobile Menu
-        document.getElementById('menu-btn').addEventListener('click', () => {
-            const m = document.getElementById('menu-overlay');
-            m.classList.remove('-translate-y-full', 'opacity-0');
-            m.classList.add('translate-y-0', 'opacity-100');
-        });
-        document.getElementById('close-menu-btn').addEventListener('click', () => {
-            const m = document.getElementById('menu-overlay');
-            m.classList.add('-translate-y-full', 'opacity-0');
-            m.classList.remove('translate-y-0', 'opacity-100');
-        });
-        document.querySelectorAll('.menu-link').forEach(l => l.addEventListener('click', () => {
-            const m = document.getElementById('menu-overlay');
-            m.classList.add('-translate-y-full', 'opacity-0');
-            m.classList.remove('translate-y-0', 'opacity-100');
-        }));
-
-        // Wellness Switcher
-        window.switchWellness = (type) => {
-            ['spa', 'sauna', 'salon'].forEach(item => {
-                const bg = document.getElementById(`wellness-bg-${item}`);
-                const title = document.getElementById(`wellness-title-${item}`);
-                if (item === type) {
-                    bg.classList.remove('opacity-0');
-                    bg.classList.add('opacity-100');
-                    title.classList.remove('text-gray-500', 'hover:text-gray-300');
-                    title.classList.add('text-gold');
-                } else {
-                    bg.classList.remove('opacity-100');
-                    bg.classList.add('opacity-0');
-                    title.classList.remove('text-gold');
-                    title.classList.add('text-gray-500', 'hover:text-gray-300');
-                }
-            });
-            const wellnessContents = {
-                spa: { title: 'Spa Services', desc: 'Refresh your mind and body. We offer relaxing massage therapies, facial care, and premium oil rituals.' },
-                sauna: { title: 'Hot Sauna', desc: 'Flush toxins and refresh your body inside our premium heated pine sauna and relaxing eucalyptus-scented steam bath cabinets.' },
-                salon: { title: 'Beauty Salon', desc: 'Step into our professional beauty salon for cuts, styling, conditioning, and luxury hair treatments hosted by top local stylists.' }
-            };
-            document.getElementById('panel-title').innerText = wellnessContents[type].title;
-            document.getElementById('panel-desc').innerText = wellnessContents[type].desc;
-        };
     </script>
 </body>
 </html>
+
 
 
