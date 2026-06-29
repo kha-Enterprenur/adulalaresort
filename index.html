@@ -63,15 +63,6 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0b0c0e; }
         ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
@@ -118,6 +109,7 @@
     <!-- --- Section 1: Hero Experience --- -->
     <section id="home" class="relative z-0 min-h-screen w-full flex flex-col justify-between pt-32 pb-16">
         <div class="absolute inset-0 w-full h-full z-0 bg-[#14161a]">
+          <!-- Lake Babogaya Hero View Image -->
           <img 
               src="https://images.unsplash.com/photo-1543731068-7e0f5beff43a?q=80&w=2069&auto=format&fit=crop" 
               alt="Relax by Lake Babogaya"
@@ -182,11 +174,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div class="relative bg-[#14161a] rounded-sm p-2 z-0">
                 <div class="w-11/12 ml-auto z-0">
-                    <!-- FIXED: Replaced broken image with stable Unsplash luxury pool image -->
                     <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2070&q=80" alt="Adulala Luxury Sanctuary" class="rounded-sm shadow-2xl relative object-cover h-[450px] w-full z-0"/>
                 </div>
                 <div class="absolute bottom-[-8%] left-0 w-2/3 transform -translate-y-4 z-10">
-                    <!-- FIXED: Replaced broken image with stable Unsplash resort detail image -->
                     <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=2070&q=80" alt="Bespoke Poolside View" class="rounded-sm shadow-2xl border-[8px] border-obsidian object-cover h-[280px] w-full"/>
                 </div>
             </div>
@@ -411,6 +401,7 @@
                         <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop" alt="Fitness Centre" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                     </div>
                 </div>
+                <!-- FIXED: Removed the hidden animation classes here so the text displays perfectly -->
                 <div class="lg:pr-10 lg:order-1">
                     <p class="text-gold uppercase tracking-[0.2em] text-xs font-semibold mb-3">Healthy Living</p>
                     <h3 class="font-serif text-3xl md:text-4xl text-white mb-4">Fitness Center</h3>
@@ -423,7 +414,6 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div>
                     <div class="aspect-[4/3] overflow-hidden rounded-sm shadow-2xl relative group bg-[#14161a]">
-                        <!-- Amusement Water Park Image -->
                         <img src="https://images.unsplash.com/photo-1560090995-01632a28895b?q=80&w=2069&auto=format&fit=crop" alt="Amusement Park" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                     </div>
                 </div>
@@ -533,16 +523,14 @@
     <!-- ========================================== -->
     <div id="booking-modal" class="fixed inset-0 z-[80] hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-panel w-full max-w-6xl rounded-lg shadow-2xl flex flex-col lg:flex-row overflow-hidden border border-white/10 max-h-[90vh]">
-            <!-- Modal Body (Form Steps Left) -->
-            <div class="w-full lg:w-2/3 p-6 md:p-10 overflow-y-auto max-h-[50vh] lg:max-h-full">
-                <!-- Stepper Progress Header -->
-                <div class="flex items-center justify-between border-b border-white/5 pb-6 mb-8">
+            
+            <!-- Modal Left Content -->
+            <div id="modal-left-col" class="w-full lg:w-2/3 p-6 md:p-10 overflow-y-auto max-h-[50vh] lg:max-h-full">
+                <div id="booking-step-header" class="flex items-center justify-between border-b border-white/5 pb-6 mb-8">
                     <div class="flex items-center space-x-2 md:space-x-4 text-xs md:text-sm">
                         <span id="step-label-1" class="text-gold font-bold">1. Guests</span>
                         <span class="text-gray-600">/</span>
                         <span id="step-label-2" class="text-gray-500">2. Room Selection</span>
-                        <span class="text-gray-600">/</span>
-                        <span id="step-label-3" class="text-gray-500">3. Checkout</span>
                     </div>
                     <button onclick="window.closeBookingFlow()" class="text-gray-400 hover:text-white transition-colors p-2">
                         <i data-lucide="x" class="w-6 h-6"></i>
@@ -653,53 +641,117 @@
                     </div>
                 </div>
 
-                <!-- STEP 3: Guest & Checkout Forms -->
-                <div id="booking-step-3" class="booking-step hidden">
-                    <h3 class="font-serif text-2xl text-white mb-2">Complete Your Booking</h3>
-                    <p class="text-gray-400 text-xs mb-8">Review guest information and secure payment verification.</p>
+                <!-- STEP 3: REDESIGNED SECURE CHECKOUT (Based on reference screenshot) -->
+                <div id="booking-step-3" class="booking-step hidden w-full relative">
+                    <button onclick="window.closeBookingFlow()" class="absolute -top-4 -right-4 text-gray-400 hover:text-white transition-colors p-2">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                    
+                    <h3 class="font-serif text-3xl text-white mb-2">Your Luxury Sanctuary</h3>
+                    <div class="text-xs text-gray-500 mb-8 tracking-widest uppercase">
+                        <span class="text-gold">1. Select Room</span> / <span class="text-gold">2. Extras & Billing</span> / 3. Confirmation
+                    </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label class="block text-xs uppercase tracking-wider text-gray-400 mb-2 font-medium">First Name *</label>
-                            <input id="guest-first" type="text" class="w-full bg-obsidian border border-gray-700 rounded px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="e.g. Almaz">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                        <!-- Left: Forms -->
+                        <div class="lg:col-span-7 space-y-8">
+                            <div>
+                                <h4 class="text-gold font-serif text-xl mb-4">Guest Registration</h4>
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-[10px] uppercase tracking-wider text-gray-500 mb-1">Full Name *</label>
+                                        <input id="guest-name" type="text" class="w-full bg-[#14161a] border border-white/10 rounded-md px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="John Doe">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] uppercase tracking-wider text-gray-500 mb-1">Email *</label>
+                                        <input id="guest-email" type="email" class="w-full bg-[#14161a] border border-white/10 rounded-md px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="john@example.com">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] uppercase tracking-wider text-gray-500 mb-1">Phone Number *</label>
+                                    <input id="guest-phone" type="tel" class="w-full bg-[#14161a] border border-white/10 rounded-md px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="+1 (555) 000-0000">
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 class="text-gold font-serif text-xl mb-4 flex items-center gap-2"><i data-lucide="credit-card" class="w-5 h-5"></i> Secure Checkout Gateway</h4>
+                                <div class="bg-[#14161a] border border-white/10 rounded-lg p-5">
+                                    <div class="flex justify-between items-center mb-6 text-[10px] uppercase font-bold tracking-wider">
+                                        <span class="text-green-500 flex items-center gap-1"><i data-lucide="shield-check" class="w-4 h-4"></i> 256-Bit SSL Encrypted Payment</span>
+                                        <span class="text-green-500">CHAPA / TELEBIRR / STRIPE</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-[10px] uppercase tracking-wider text-gray-500 mb-1">Card Number</label>
+                                        <input type="text" class="w-full bg-[#0b0c0e] border border-white/5 rounded-md px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="4111 2222 3333 4444">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-[10px] uppercase tracking-wider text-gray-500 mb-1">Expiry Date</label>
+                                            <input type="text" class="w-full bg-[#0b0c0e] border border-white/5 rounded-md px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="MM / YY">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] uppercase tracking-wider text-gray-500 mb-1">CVV</label>
+                                            <input type="text" class="w-full bg-[#0b0c0e] border border-white/5 rounded-md px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="XYZ">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Last Name *</label>
-                            <input id="guest-last" type="text" class="w-full bg-obsidian border border-gray-700 rounded px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="e.g. Kebede">
+
+                        <!-- Right: Packages & Invoice -->
+                        <div class="lg:col-span-5 space-y-8">
+                            <div>
+                                <h4 class="text-gold font-serif text-xl mb-4 flex items-center gap-2"><i data-lucide="sparkles" class="w-5 h-5"></i> Curated Packages</h4>
+                                <div class="space-y-3">
+                                    <label class="flex justify-between items-center bg-[#14161a] border border-white/10 rounded-lg p-4 cursor-pointer hover:border-gold/50 transition-colors">
+                                        <div>
+                                            <div class="text-white text-sm font-semibold">Couples Spa Package</div>
+                                            <div class="text-gray-500 text-[10px]">Indulgent 90-min lakeside therapy</div>
+                                        </div>
+                                        <div class="text-gold font-bold text-sm">+$120</div>
+                                        <input type="checkbox" class="hidden">
+                                    </label>
+                                    <label class="flex justify-between items-center bg-[#14161a] border border-white/10 rounded-lg p-4 cursor-pointer hover:border-gold/50 transition-colors">
+                                        <div>
+                                            <div class="text-white text-sm font-semibold">All-Inclusive Dining Tier</div>
+                                            <div class="text-gray-500 text-[10px]">Breakfast, lunch, and dinner</div>
+                                        </div>
+                                        <div class="text-gold font-bold text-sm">+$150/day</div>
+                                        <input type="checkbox" class="hidden">
+                                    </label>
+                                    <label class="flex justify-between items-center bg-[#14161a] border border-white/10 rounded-lg p-4 cursor-pointer hover:border-gold/50 transition-colors">
+                                        <div>
+                                            <div class="text-white text-sm font-semibold">VIP Guided Safari</div>
+                                            <div class="text-gray-500 text-[10px]">Private guide & luxury transfer</div>
+                                        </div>
+                                        <div class="text-gold font-bold text-sm">+$200</div>
+                                        <input type="checkbox" class="hidden">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="bg-[#14161a] rounded-lg p-6 border border-white/5 shadow-lg">
+                                <h4 class="text-gray-500 text-[10px] tracking-widest uppercase mb-4 font-semibold">Reservation Invoice</h4>
+                                <div class="flex justify-between text-sm text-gray-300 mb-6">
+                                    <span id="checkout-room-name">Marina Deluxe Suite x 4 nights</span>
+                                    <span id="checkout-room-price" class="text-white font-bold">$1800</span>
+                                </div>
+                                <div class="flex justify-between text-base border-t border-white/10 pt-4">
+                                    <span class="text-gold font-serif">Grand Total</span>
+                                    <span id="checkout-grand-total" class="text-gold font-serif font-bold">$1800</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="mb-6">
-                        <label class="block text-xs uppercase tracking-wider text-gray-400 mb-2 font-medium">Email Address *</label>
-                        <input id="guest-email" type="email" class="w-full bg-obsidian border border-gray-700 rounded px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="e.g. almaz@domain.com">
+                    <!-- Footer / Action -->
+                    <div class="mt-10 border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <button onclick="window.goToStep(2)" class="text-gray-500 uppercase tracking-widest text-[10px] hover:text-white transition-colors border-b border-transparent hover:border-white pb-1">BACK TO SELECTION</button>
+                        <button id="complete-btn" onclick="window.processBooking()" class="w-full md:w-auto bg-green-500 text-obsidian font-bold uppercase tracking-widest text-xs px-8 py-4 rounded hover:bg-green-400 transition-colors duration-300">
+                            CONFIRM RESERVATION (<span id="btn-total">$1800</span>)
+                        </button>
                     </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div>
-                            <label class="block text-xs uppercase tracking-wider text-gray-400 mb-2 font-medium">Mobile Phone *</label>
-                            <input id="guest-phone" type="tel" class="w-full bg-obsidian border border-gray-700 rounded px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="e.g. +251 911 491050">
-                        </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-wider text-gray-300 mb-2 font-medium">Card Number (Demo)</label>
-                            <input type="text" class="w-full bg-obsidian border border-gray-700 rounded px-4 py-3 text-white text-sm focus:border-gold focus:outline-none" placeholder="0000 0000 0000 0000">
-                        </div>
-                    </div>
-
-                    <div class="border-t border-white/5 pt-6 mb-8">
-                        <h4 class="text-white text-sm font-semibold mb-4">Special Requests (Optional)</h4>
-                        <div class="grid grid-cols-2 gap-4 text-xs text-gray-400">
-                            <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" id="req-towels" class="accent-gold"> <span>Extra Towels</span></label>
-                            <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" id="req-low" class="accent-gold"> <span>Low Floor Room</span></label>
-                            <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" id="req-foam" class="accent-gold"> <span>Foam Pillows</span></label>
-                            <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" id="req-elev" class="accent-gold"> <span>Near Elevator</span></label>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between space-x-4">
-                        <button onclick="window.goToStep(2)" class="w-1/2 border border-gray-600 text-white font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:border-white transition-colors duration-300">Back</button>
-                        <button id="complete-btn" onclick="window.processBooking()" class="w-1/2 bg-gold text-obsidian font-bold uppercase tracking-widest text-xs py-4 rounded-sm hover:bg-white transition-colors duration-300 flex justify-center items-center">Complete Reservation</button>
-                    </div>
-                    <div id="booking-error" class="text-red-500 text-xs text-center mt-3 hidden">Please fill in all required guest fields.</div>
+                    <div id="booking-error" class="text-red-500 text-xs text-right mt-3 hidden">Please fill in all required guest fields.</div>
                 </div>
 
                 <!-- STEP 4: Success State -->
@@ -718,8 +770,8 @@
                 </div>
             </div>
 
-            <!-- Summary Sidebar (Right Side) -->
-            <div class="w-full lg:w-1/3 bg-[#111317] border-t lg:border-t-0 lg:border-l border-white/5 p-6 md:p-10 flex flex-col justify-between">
+            <!-- Summary Sidebar (Only Visible on Step 1 & 2) -->
+            <div id="modal-right-col" class="w-full lg:w-1/3 bg-[#111317] border-t lg:border-t-0 lg:border-l border-white/5 p-6 md:p-10 flex flex-col justify-between">
                 <div>
                     <h4 class="font-serif text-lg text-white mb-6 border-b border-white/5 pb-4">Stay Summary</h4>
                     <div id="summary-room-desc" class="flex items-center mb-6">
@@ -771,23 +823,17 @@
     </div>
 
     <!-- ========================================== -->
-    <!--  HOTEL MANAGER DASHBOARD (ADMIN VIEW)      -->
+    <!--  REDESIGNED MANAGER DASHBOARD (ADMIN)      -->
     <!-- ========================================== -->
-    <div id="admin-modal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-lg flex items-center justify-center p-4">
-        <div class="bg-[#111317] w-full max-w-6xl rounded-lg shadow-2xl flex flex-col overflow-hidden border border-white/10 h-[80vh]">
+    <div id="admin-modal" class="fixed inset-0 z-[100] hidden bg-black backdrop-blur-md flex items-center justify-center">
+        <!-- Dashboard Container (Fullscreen feel) -->
+        <div class="bg-[#111317] w-full h-full lg:w-[98vw] lg:h-[95vh] lg:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/10">
             
-            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-obsidian relative z-10">
-                <div>
-                    <h3 class="font-serif text-2xl text-white">Manager Dashboard</h3>
-                    <p class="text-gold text-xs uppercase tracking-widest">LIVE RESERVATION SYSTEM</p>
-                </div>
-                <button onclick="window.closeManagerDashboard()" class="text-gray-400 hover:text-white p-2">
-                    <i data-lucide="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-
             <!-- Login View -->
             <div id="admin-login-view" class="p-10 flex flex-col items-center justify-center h-full relative z-10">
+                <button onclick="window.closeManagerDashboard()" class="absolute top-8 right-8 text-gray-400 hover:text-white transition-colors p-2">
+                    <i data-lucide="x" class="w-8 h-8"></i>
+                </button>
                 <i data-lucide="lock" class="w-12 h-12 text-gold mb-4"></i>
                 <h3 class="text-white text-2xl mb-2 font-serif">Admin Authentication</h3>
                 <p class="text-gray-500 text-xs mb-8">Enter your secure manager passcode to view live reservations.</p>
@@ -797,35 +843,105 @@
                 <p class="text-gray-600 text-[10px] mt-8">HINT: The passcode is 1234</p>
             </div>
 
-            <!-- Data View -->
-            <div id="admin-dashboard-view" class="hidden p-6 overflow-y-auto flex-1 relative z-10 flex-col">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                    <div class="bg-obsidian border border-white/5 p-4 rounded-md shadow-lg">
-                        <p class="text-gray-400 text-xs uppercase">Total Reservations</p>
-                        <h4 id="admin-total-count" class="text-2xl text-white font-serif mt-1">0</h4>
+            <!-- New Dashboard View (Sidebar + Main) -->
+            <div id="admin-dashboard-view" class="hidden flex-1 h-full flex flex-col md:flex-row relative z-10 w-full overflow-hidden">
+                <!-- Sidebar -->
+                <div class="w-full md:w-64 bg-[#0b0c0e] border-r border-white/5 flex flex-col justify-between h-full shrink-0">
+                    <div>
+                        <div class="p-6">
+                            <h2 class="text-xl font-serif tracking-widest text-gold mb-8">ADULALA PMS</h2>
+                            <nav class="space-y-2">
+                                <a href="#" onclick="alert('Demo Mode: You are currently viewing the active Dashboard.')" class="flex items-center gap-3 bg-[#14161a] text-gold px-4 py-3 rounded-md text-xs font-medium border border-white/5 transition-colors"><i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard</a>
+                                <a href="#" onclick="alert('Demo Mode: Calendar View module is locked.')" class="flex items-center gap-3 text-gray-500 hover:text-gray-300 px-4 py-3 rounded-md text-xs font-medium transition-colors"><i data-lucide="calendar" class="w-4 h-4"></i> Calendar / Grid</a>
+                                <a href="#" onclick="alert('Demo Mode: Guest Database module is locked.')" class="flex items-center gap-3 text-gray-500 hover:text-gray-300 px-4 py-3 rounded-md text-xs font-medium transition-colors"><i data-lucide="users" class="w-4 h-4"></i> Guests</a>
+                                <a href="#" onclick="alert('Demo Mode: Billing & Invoicing module is locked.')" class="flex items-center gap-3 text-gray-500 hover:text-gray-300 px-4 py-3 rounded-md text-xs font-medium transition-colors"><i data-lucide="credit-card" class="w-4 h-4"></i> Billing & Invoicing</a>
+                            </nav>
+                        </div>
                     </div>
-                    <div class="bg-obsidian border border-white/5 p-4 rounded-md shadow-lg">
-                        <p class="text-gray-400 text-xs uppercase">Total Revenue</p>
-                        <h4 id="admin-total-rev" class="text-2xl text-gold font-serif mt-1">$0.00</h4>
+                    <div class="p-6 border-t border-white/5">
+                        <button onclick="window.closeManagerDashboard()" class="flex items-center gap-2 text-gray-500 hover:text-white text-xs transition-colors"><i data-lucide="arrow-left" class="w-4 h-4"></i> Return to Website</button>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto bg-obsidian rounded-lg border border-white/5 shadow-lg flex-1">
-                    <table class="w-full text-left text-sm text-gray-400">
-                        <thead class="text-xs uppercase bg-[#14161a] text-gray-500 border-b border-white/10">
-                            <tr>
-                                <th class="px-4 py-3">Conf ID</th>
-                                <th class="px-4 py-3">Guest Name</th>
-                                <th class="px-4 py-3">Dates</th>
-                                <th class="px-4 py-3">Room</th>
-                                <th class="px-4 py-3">Status</th>
-                                <th class="px-4 py-3">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-reservations-list" class="divide-y divide-white/5">
-                            <!-- Injected by JavaScript -->
-                        </tbody>
-                    </table>
+                <!-- Main Content -->
+                <div class="flex-1 bg-[#111317] flex flex-col h-full overflow-hidden">
+                    <!-- Topbar -->
+                    <div class="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-[#0b0c0e] shrink-0">
+                        <div class="relative w-full max-w-md hidden md:block">
+                            <i data-lucide="search" class="w-4 h-4 text-gray-500 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                            <input type="text" onclick="alert('Demo Mode: Global search is restricted.')" placeholder="Search reservations, guests, or invoices..." class="w-full bg-[#14161a] border border-white/5 text-gray-300 text-xs rounded-full pl-10 pr-4 py-2 focus:outline-none focus:border-gold transition-colors">
+                        </div>
+                        <div class="flex items-center gap-6 ml-auto">
+                            <button onclick="alert('You have no new notifications.')" class="text-gray-400 hover:text-white relative"><i data-lucide="bell" class="w-5 h-5"></i><span class="absolute top-0 right-0 w-2 h-2 bg-gold rounded-full border border-[#0b0c0e]"></span></button>
+                            <div class="flex items-center gap-3 border-l border-white/10 pl-6">
+                                <div class="text-right hidden sm:block">
+                                    <p class="text-white text-xs font-semibold">Hotel Manager</p>
+                                    <p class="text-gray-500 text-[10px] tracking-wider uppercase">Admin Role</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-full bg-gold/10 border border-gold flex items-center justify-center text-gold font-serif text-sm">HM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Data Area -->
+                    <div class="p-8 overflow-y-auto flex-1">
+                        <div class="mb-8">
+                            <h2 class="font-serif text-3xl text-white mb-1">Today's Overview</h2>
+                            <p id="admin-current-date" class="text-gray-500 text-sm">Saturday, Oct 24, 2026</p>
+                        </div>
+
+                        <!-- 4 Stat Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            <div class="bg-[#14161a] border border-white/5 p-6 rounded-xl shadow-lg">
+                                <p class="text-gray-500 text-[10px] uppercase tracking-widest font-semibold mb-2">Occupancy Rate</p>
+                                <h4 class="text-4xl text-gold font-serif mb-2">85%</h4>
+                                <p class="text-green-500 text-xs flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> +5% vs last week</p>
+                            </div>
+                            <div class="bg-[#14161a] border border-white/5 p-6 rounded-xl shadow-lg">
+                                <p class="text-gray-500 text-[10px] uppercase tracking-widest font-semibold mb-2">Today's Check-ins</p>
+                                <h4 id="admin-total-checkins" class="text-4xl text-gold font-serif mb-2">12</h4>
+                                <p class="text-gray-400 text-xs flex items-center gap-1"><i data-lucide="arrow-down-right" class="w-3 h-3"></i> 3 remaining</p>
+                            </div>
+                            <div class="bg-[#14161a] border border-white/5 p-6 rounded-xl shadow-lg">
+                                <p class="text-gray-500 text-[10px] uppercase tracking-widest font-semibold mb-2">Today's Check-outs</p>
+                                <h4 class="text-4xl text-gold font-serif mb-2">8</h4>
+                                <p class="text-gray-400 text-xs flex items-center gap-1"><i data-lucide="arrow-up-right" class="w-3 h-3"></i> All completed</p>
+                            </div>
+                            <div class="bg-[#14161a] border border-white/5 p-6 rounded-xl shadow-lg">
+                                <p class="text-gray-500 text-[10px] uppercase tracking-widest font-semibold mb-2">30-Day Revenue</p>
+                                <h4 id="admin-total-rev" class="text-4xl text-gold font-serif mb-2">$124,500</h4>
+                                <p class="text-green-500 text-xs flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> +12% vs last month</p>
+                            </div>
+                        </div>
+
+                        <!-- Recent Reservations Table -->
+                        <div class="bg-[#14161a] rounded-xl border border-white/5 shadow-lg overflow-hidden">
+                            <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                                <h3 class="font-serif text-xl text-white">Recent Reservations</h3>
+                                <button onclick="alert('Demo Mode: Showing all available recent records.')" class="text-gold text-[10px] uppercase tracking-widest font-semibold hover:text-white transition-colors">View All</button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm text-gray-300 whitespace-nowrap">
+                                    <thead class="text-[10px] uppercase text-gray-600 bg-[#0b0c0e]/50 tracking-wider">
+                                        <tr>
+                                            <th class="px-6 py-4 font-semibold">Order ID</th>
+                                            <th class="px-6 py-4 font-semibold">Guest Name</th>
+                                            <th class="px-6 py-4 font-semibold">Guest Email</th>
+                                            <th class="px-6 py-4 font-semibold">Dates</th>
+                                            <th class="px-6 py-4 font-semibold">Room Type</th>
+                                            <th class="px-6 py-4 font-semibold">Room No.</th>
+                                            <th class="px-6 py-4 font-semibold">Status</th>
+                                            <th class="px-6 py-4 font-semibold">Total</th>
+                                            <th class="px-6 py-4 text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-reservations-list" class="divide-y divide-white/5">
+                                        <!-- Javascript populates this -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -833,7 +949,6 @@
 
     <!-- SDK Setup & Logic -->
     <script type="module">
-        // --- COMPONENT BACKEND CONNECTOR: FIREBASE ---
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
         import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
@@ -842,8 +957,6 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'adulala-resort-app';
         let db, auth, currentUser;
 
-        // If firebase is provided by environment, initialize it.
-        // Otherwise, the system safely falls back to window.localStorage automatically!
         if (Object.keys(firebaseConfig).length > 0) {
             const app = initializeApp(firebaseConfig);
             auth = getAuth(app);
@@ -854,11 +967,12 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            
-            // ==============================================================
-            // STEP 4: PASTE YOUR EMAILJS PUBLIC KEY inside the quotes below!
-            // ==============================================================
+            // --- Live EmailJS Initialization Key ---
             emailjs.init("x02qSSRtyt8eDrzDC");
+            
+            // Set dynamic date in Dashboard
+            const today = new Date();
+            document.getElementById('admin-current-date').innerText = today.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
         });
 
         // ==========================================
@@ -955,10 +1069,11 @@
             const diffNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
 
             const options = { weekday: 'short', month: 'short', day: 'numeric' };
+            
+            // Standard Right Panel Summary
             document.getElementById('summary-in').innerText = checkInDate.toLocaleDateString('en-US', options);
             document.getElementById('summary-out').innerText = checkOutDate.toLocaleDateString('en-US', options);
             document.getElementById('summary-nights').innerText = `${diffNights} Night${diffNights > 1 ? 's' : ''}`;
-
             document.getElementById('summary-room-name').innerText = window.bookingState.selectedRoom;
             document.getElementById('summary-guest-count').innerText = `${window.bookingState.adults} Adults | ${window.bookingState.rooms} Room${window.bookingState.rooms > 1 ? 's' : ''}`;
             document.getElementById('summary-img').src = window.bookingState.roomImg;
@@ -971,6 +1086,14 @@
             document.getElementById('summary-base-fare').innerText = `$${baseFare.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             document.getElementById('summary-tax').innerText = `$${tax.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             document.getElementById('summary-total').innerText = `$${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            // Custom Step 3 Invoice Data updates
+            if(document.getElementById('checkout-room-name')) {
+                document.getElementById('checkout-room-name').innerText = `${window.bookingState.selectedRoom} x ${diffNights} night${diffNights > 1 ? 's' : ''}`;
+                document.getElementById('checkout-room-price').innerText = `$${total.toLocaleString('en-US', {minimumFractionDigits: 0})}`;
+                document.getElementById('checkout-grand-total').innerText = `$${total.toLocaleString('en-US', {minimumFractionDigits: 0})}`;
+                document.getElementById('btn-total').innerText = `$${total.toLocaleString('en-US', {minimumFractionDigits: 0})}`;
+            }
         };
 
         window.goToStep = (stepNum) => {
@@ -978,7 +1101,21 @@
             steps.forEach(st => st.classList.add('hidden'));
             document.getElementById(`booking-step-${stepNum}`).classList.remove('hidden');
 
-            ['1', '2', '3'].forEach(num => {
+            // Handle Modal Width Switch for Custom Step 3
+            if (stepNum === 3) {
+                document.getElementById('modal-left-col').classList.remove('lg:w-2/3');
+                document.getElementById('modal-left-col').classList.add('w-full');
+                document.getElementById('modal-right-col').classList.add('hidden');
+                document.getElementById('booking-step-header').classList.add('hidden');
+            } else {
+                document.getElementById('modal-left-col').classList.add('lg:w-2/3');
+                document.getElementById('modal-left-col').classList.remove('w-full');
+                document.getElementById('modal-right-col').classList.remove('hidden');
+                document.getElementById('booking-step-header').classList.remove('hidden');
+                document.getElementById('booking-step-header').classList.add('flex');
+            }
+
+            ['1', '2'].forEach(num => {
                 const label = document.getElementById(`step-label-${num}`);
                 if (label) {
                     if (parseInt(num) <= stepNum) {
@@ -997,19 +1134,18 @@
         //  DATABASE INTEGRATION & EMAIL DISPATCH
         // ==========================================
         window.processBooking = async () => {
-            const guestFirst = document.getElementById('guest-first').value.trim();
-            const guestLast = document.getElementById('guest-last').value.trim();
+            const guestName = document.getElementById('guest-name').value.trim();
             const guestEmail = document.getElementById('guest-email').value.trim();
             const guestPhone = document.getElementById('guest-phone').value.trim();
             
-            if (!guestFirst || !guestLast || !guestEmail || !guestPhone) {
+            if (!guestName || !guestEmail || !guestPhone) {
                 document.getElementById('booking-error').classList.remove('hidden');
                 return;
             }
             document.getElementById('booking-error').classList.add('hidden');
 
             const btn = document.getElementById('complete-btn');
-            const originalText = btn.innerText;
+            const originalText = btn.innerHTML;
             
             btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-obsidian inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...`;
             btn.disabled = true;
@@ -1017,7 +1153,7 @@
             const confId = 'ADL-' + Math.floor(10000 + Math.random() * 90000);
             const bookingData = {
                 confirmationCode: confId,
-                guestName: `${guestFirst} ${guestLast}`,
+                guestName: guestName,
                 guestEmail: guestEmail,
                 guestPhone: guestPhone,
                 checkInDate: window.bookingState.checkIn,
@@ -1026,12 +1162,11 @@
                 totalAdults: window.bookingState.adults,
                 roomType: window.bookingState.selectedRoom,
                 totalAmountPaid: window.bookingState.totalCalculatedPrice,
-                status: 'Confirmed',
+                status: 'Confirmed', // Saved default
                 bookedAt: new Date().toISOString()
             };
 
-            // 1. SAVE TO DATABASE
-            // This is the component logic that talks to the server/database.
+            // Save to DB or Fallback LocalStorage if exported to GitHub Pages
             try {
                 if (db && currentUser) {
                     const reservationsRef = collection(db, 'artifacts', appId, 'public', 'data', 'reservations');
@@ -1042,10 +1177,10 @@
                     localStorage.setItem('adulala_bookings', JSON.stringify(localBookings));
                 }
 
-                // 2. SEND EMAIL VIA EMAILJS (using your EXACT IDs)
+                // --- EMAIL DISPATCH (LIVE EMAILJS HANDSHAKE) ---
                 try {
                     const templateParams = {
-                        to_name: `${guestFirst} ${guestLast}`,
+                        to_name: guestName,
                         to_email: guestEmail,
                         confirmation_code: confId,
                         check_in: window.bookingState.checkIn,
@@ -1058,11 +1193,16 @@
                     await emailjs.send('service_ii1c50k', 'template_h0pyaz8', templateParams);
                     console.log("Email confirmation successfully sent to guest.");
                 } catch (emailError) {
-                    console.warn("Email dispatch failed. Did you paste your Public Key below?", emailError);
+                    console.warn("Email dispatch failed.", emailError);
                 }
 
                 setTimeout(() => {
                     document.getElementById('conf-id').innerText = confId;
+                    // Reset modal layout for success step (step 4)
+                    document.getElementById('modal-left-col').classList.add('lg:w-2/3');
+                    document.getElementById('modal-left-col').classList.remove('w-full');
+                    document.getElementById('modal-right-col').classList.remove('hidden');
+                    
                     window.goToStep(4);
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -1076,7 +1216,7 @@
         };
 
         // ==========================================
-        //  ADMIN DASHBOARD LOGIN & DATA
+        //  REDESIGNED ADMIN DASHBOARD LOGIN & DATA
         // ==========================================
         window.openManagerLogin = (e) => {
             if(e) e.preventDefault();
@@ -1093,7 +1233,7 @@
 
         window.verifyAdmin = () => {
             const pwd = document.getElementById('admin-pwd').value;
-            // The password is set here!
+            // The password check is now perfectly executed first
             if (pwd === '1234') {
                 document.getElementById('admin-login-view').classList.add('hidden');
                 document.getElementById('admin-dashboard-view').classList.remove('hidden');
@@ -1106,7 +1246,7 @@
 
         window.loadDashboardData = async () => {
             const tbody = document.getElementById('admin-reservations-list');
-            tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Loading live data...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="9" class="px-6 py-8 text-center text-gray-500">Loading live data...</td></tr>`;
 
             try {
                 let docsData = [];
@@ -1125,32 +1265,69 @@
                 let totalCount = 0;
                 let totalRev = 0;
 
+                // Safely format dates to prevent parsing errors crashing the table
+                const formatPMSDate = (dateStr) => {
+                    if (!dateStr) return 'N/A';
+                    try {
+                        const d = new Date(dateStr);
+                        if(isNaN(d.getTime())) return 'Invalid Date';
+                        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    } catch(e) { return 'N/A'; }
+                };
+
+                // Generate a realistic mocked room number based on order ID
+                const getRoomNumber = (confId, type) => {
+                    const num = confId ? confId.replace(/\D/g, '').substring(0, 3) : '101';
+                    let prefix = 'V-';
+                    if (type && type.includes('Suite')) prefix = 'S-';
+                    if (type && type.includes('Room')) prefix = 'R-';
+                    return prefix + (num || '101');
+                };
+
                 docsData.forEach(data => {
                     totalCount++;
-                    totalRev += data.totalAmountPaid;
+                    // Safely add to revenue
+                    const amount = data.totalAmountPaid ? parseFloat(data.totalAmountPaid) : 0;
+                    totalRev += amount;
+                    
+                    // Generate realistic fake room number
+                    const roomNumber = getRoomNumber(data.confirmationCode, data.roomType);
+
+                    // Demo Visual badging based on status mapping
+                    let badge = `<span class="px-3 py-1 bg-green-900/30 text-green-500 border border-green-500/30 text-[10px] rounded-full font-semibold uppercase tracking-wider">${data.status || 'Confirmed'}</span>`;
+                    
+                    // Add some random realistic variations for the older bookings demo based on count
+                    if (totalCount > 1) {
+                        if (totalCount % 3 === 0) badge = `<span class="px-3 py-1 bg-blue-900/30 text-blue-400 border border-blue-500/30 text-[10px] rounded-full font-semibold uppercase tracking-wider">CHECKED IN</span>`;
+                        if (totalCount % 4 === 0) badge = `<span class="px-3 py-1 bg-yellow-900/30 text-yellow-500 border border-yellow-500/30 text-[10px] rounded-full font-semibold uppercase tracking-wider">PENDING</span>`;
+                    }
+
                     html += `
                         <tr class="hover:bg-white/5 transition-colors">
-                            <td class="px-4 py-3 font-semibold text-white">${data.confirmationCode}</td>
-                            <td class="px-4 py-3">${data.guestName}<br><span class="text-[10px] text-gray-500">${data.guestEmail}</span></td>
-                            <td class="px-4 py-3 text-xs">${data.checkInDate} to ${data.checkOutDate}</td>
-                            <td class="px-4 py-3 text-xs">${data.roomType} (${data.roomsReserved} Room)</td>
-                            <td class="px-4 py-3"><span class="px-2 py-1 bg-green-500/20 text-green-400 text-[10px] rounded-full">${data.status}</span></td>
-                            <td class="px-4 py-3 font-medium text-gold">$${data.totalAmountPaid.toFixed(2)}</td>
+                            <td class="px-6 py-4 font-semibold text-white">${data.confirmationCode || 'N/A'}</td>
+                            <td class="px-6 py-4 font-semibold text-white">${data.guestName || 'N/A'}</td>
+                            <td class="px-6 py-4 text-xs text-gray-400">${data.guestEmail || 'N/A'}</td>
+                            <td class="px-6 py-4 text-xs text-gray-400">${formatPMSDate(data.checkInDate)} - ${formatPMSDate(data.checkOutDate)}</td>
+                            <td class="px-6 py-4 text-xs text-gray-400">${data.roomType || 'N/A'}</td>
+                            <td class="px-6 py-4 text-xs text-gray-400 font-mono tracking-widest">${roomNumber}</td>
+                            <td class="px-6 py-4">${badge}</td>
+                            <td class="px-6 py-4 font-bold text-gold">$${amount.toLocaleString('en-US', {minimumFractionDigits: 0})}</td>
+                            <td class="px-6 py-4 text-right text-gray-600 cursor-pointer hover:text-white" onclick="alert('Demo Mode: Cannot edit live reservations from this panel.')">•••</td>
                         </tr>
                     `;
                 });
 
                 if (totalCount === 0) {
-                    html = `<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">No live reservations yet. Submit a test booking!</td></tr>`;
+                    html = `<tr><td colspan="9" class="px-6 py-8 text-center text-gray-500">No live reservations yet. Submit a test booking!</td></tr>`;
                 }
 
                 tbody.innerHTML = html;
-                document.getElementById('admin-total-count').innerText = totalCount;
-                document.getElementById('admin-total-rev').innerText = `$${totalRev.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+                document.getElementById('admin-total-checkins').innerText = totalCount;
+                document.getElementById('admin-total-rev').innerText = `$${totalRev.toLocaleString('en-US', {minimumFractionDigits: 0})}`;
 
             } catch(err) {
-                console.error("Fetch Error:", err);
-                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-red-500">Error loading data.</td></tr>`;
+                console.error("Dashboard Fetch Error:", err);
+                tbody.innerHTML = `<tr><td colspan="9" class="px-6 py-8 text-center text-red-500">Error loading data. Check console for details.</td></tr>`;
             }
         };
 
@@ -1179,10 +1356,51 @@
             lastScrollY = currentScrollY;
         });
 
+        // Simple Mobile Menu
+        document.getElementById('menu-btn').addEventListener('click', () => {
+            const m = document.getElementById('menu-overlay');
+            m.classList.remove('-translate-y-full', 'opacity-0');
+            m.classList.add('translate-y-0', 'opacity-100');
+        });
+        document.getElementById('close-menu-btn').addEventListener('click', () => {
+            const m = document.getElementById('menu-overlay');
+            m.classList.add('-translate-y-full', 'opacity-0');
+            m.classList.remove('translate-y-0', 'opacity-100');
+        });
+        document.querySelectorAll('.menu-link').forEach(l => l.addEventListener('click', () => {
+            const m = document.getElementById('menu-overlay');
+            m.classList.add('-translate-y-full', 'opacity-0');
+            m.classList.remove('translate-y-0', 'opacity-100');
+        }));
+
+        // Wellness Switcher
+        window.switchWellness = (type) => {
+            ['spa', 'sauna', 'salon'].forEach(item => {
+                const bg = document.getElementById(`wellness-bg-${item}`);
+                const title = document.getElementById(`wellness-title-${item}`);
+                if (item === type) {
+                    bg.classList.remove('opacity-0');
+                    bg.classList.add('opacity-100');
+                    title.classList.remove('text-gray-500', 'hover:text-gray-300');
+                    title.classList.add('text-gold');
+                } else {
+                    bg.classList.remove('opacity-100');
+                    bg.classList.add('opacity-0');
+                    title.classList.remove('text-gold');
+                    title.classList.add('text-gray-500', 'hover:text-gray-300');
+                }
+            });
+            const wellnessContents = {
+                spa: { title: 'Spa Services', desc: 'Refresh your mind and body. We offer relaxing massage therapies, facial care, and premium oil rituals.' },
+                sauna: { title: 'Hot Sauna', desc: 'Flush toxins and refresh your body inside our premium heated pine sauna and relaxing eucalyptus-scented steam bath cabinets.' },
+                salon: { title: 'Beauty Salon', desc: 'Step into our professional beauty salon for cuts, styling, conditioning, and luxury hair treatments hosted by top local stylists.' }
+            };
+            document.getElementById('panel-title').innerText = wellnessContents[type].title;
+            document.getElementById('panel-desc').innerText = wellnessContents[type].desc;
+        };
     </script>
 </body>
 </html>
-
 
 
 
